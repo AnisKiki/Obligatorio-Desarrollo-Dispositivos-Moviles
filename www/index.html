@@ -17,6 +17,7 @@
         rel="stylesheet" 
         href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
     />
+    
 </head>
 <body>
     <ion-app>
@@ -104,9 +105,14 @@
                     <ion-item>
                         <ion-input label="Nombre" id="txtRegistroNombre" label-placement="floating" placeholder="Nombre de Usuario"></ion-input>
                     </ion-item>
-                    <ion-item>
-                        <ion-input label="Pais" id="txtRegistroPais" label-placement="floating" placeholder="Su Pais"></ion-input>
-                    </ion-item>
+                    <ion-list>
+                        <ion-item>
+                          <ion-select id="selectPaises" interface="popover" placeholder="Seleccione un Pais">
+                            <div slot="label">Pais</div>
+
+                          </ion-select>
+                        </ion-item>
+                      </ion-list>
                     <ion-item>
                         <ion-input label="Password" id="txtRegistroPassword" type="Password" label-placement="floating" placeholder="Password"></ion-input>
                     </ion-item>
