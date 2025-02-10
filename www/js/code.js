@@ -101,8 +101,7 @@ async function TomarDatosRegistro() {
   }
 
   if (mensajeError) {
-    document.querySelector("#label-respuesta-registro").innerHTML =
-      mensajeError;
+  MostrarToast(mensajeError, 3000);
     return;
   }
 
