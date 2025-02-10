@@ -116,6 +116,10 @@ async function TomarDatosRegistro() {
   if (respuesta.codigo == 200){
     nav.push("page-home")
     MostrarToast("Registro Exitoso", 3000)
+    localStorage.setItem("token", respuesta.apyKey);
+    localStorage.setItem("id", respuesta.id);
+    ArmarMenu();
+
   }else{
     MostrarToast("Error en el registro", 3000)
   }
