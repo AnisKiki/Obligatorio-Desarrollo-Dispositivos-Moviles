@@ -1,0 +1,55 @@
+:root{
+    --ion-background-color: #000000; 
+    --ion-text-color: #ffffff; 
+    --ion-color-primary: #F72798; 
+    --ion-toolbar-background: #000000; 
+    --ion-toolbar-color: #ffffff; 
+}
+body{
+    background-color: var(--ion-background-color);
+    color: var(--ion-text-color);
+}
+
+
+ion-button{
+    --background: #F72798 !important;
+    --background-hover: #D81B74 !important; 
+    --background-activated: #D81B74 !important;
+    --color: white !important;
+    border-radius: 5px;
+    font-weight: bold;
+    --ion-color-primary: #F72798 !important; 
+}
+ion-button::part(native){
+    background: #F72798 !important; 
+}
+ion-item{
+    --background: #EEEEEE !important; 
+    --color: #000000 !important; 
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+ion-input, ion-select, ion-datetim{
+    --background: #EEEEEE !important; 
+    --color: #000000 !important; 
+    --placeholder-color: #555 !important; 
+    --padding-start: 10px;
+    --padding-end: 10px;
+    border-radius: 5px;
+}
+
+ion-menu{
+    --ion-background-color: black !important; 
+}
+ion-menu ion-item{
+    --background: transparent !important; 
+    --color: white !important; 
+    --ripple-color: transparent !important; 
+    border-bottom: 1px solid white !important; 
+}
+ion-menu ion-item::part(native){
+    background: transparent !important;
+}
+ion-menu ion-list{
+    padding: 10px 0;
+}
