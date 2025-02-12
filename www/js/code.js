@@ -4,7 +4,7 @@ const HOME = document.querySelector("#pantalla-home");
 const LOGIN = document.querySelector("#pantalla-login");
 const REGISTRO = document.querySelector("#pantalla-registro");
 const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
-const MIS = document.querySelector("#mis-registros");
+const MIS = document.querySelector("#pantalla-mis-registros");
 const URL_BASE = "https://movetrack.develotion.com/";
 const nav = dqs("ion-nav");
 let actividades = null;
@@ -288,7 +288,6 @@ function OcultarPantalla() {
   REGISTRO.style.display = "none";
   EJERCICIOS.style.display = "none";
   MIS.style.display = "none";
-
 }
 
 function CerrarMenu() {
