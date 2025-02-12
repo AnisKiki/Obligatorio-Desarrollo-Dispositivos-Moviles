@@ -35,21 +35,21 @@ function ArmarMenu() {
   document.querySelector("#menu-opciones").innerHTML = cadena;
 }
 
-const loading = document.createElement('ion-loading');
+const loading = document.createElement("ion-loading");
 function PrenderLoading(texto) {
-    loading.cssClass = 'my-custom-class';
-    loading.message = texto;
-    //loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
+  loading.cssClass = "my-custom-class";
+  loading.message = texto;
+  //loading.duration = 2000;
+  document.body.appendChild(loading);
+  loading.present();
 }
 
 function MostrarToast(mensaje, duracion) {
-    const toast = document.createElement('ion-toast');
-    toast.message = mensaje;
-    toast.duration = duracion;
-    document.body.appendChild(toast);
-    toast.present();
+  const toast = document.createElement("ion-toast");
+  toast.message = mensaje;
+  toast.duration = duracion;
+  document.body.appendChild(toast);
+  toast.present();
 }
 
 function Eventos() {
@@ -70,22 +70,18 @@ function Eventos() {
   document.querySelector("#menu").addEventListener("ionDidClose", () => {
     document.querySelector("#menu").setAttribute("aria-hidden", "true");
   });
-
-  document.addEventListener("DOMContentLoaded", CargarActividades);
 }
-async function cargarSelectPaises(){
+async function cargarSelectPaises() {
+  PrenderLoading("Cargando Componentes");
+  let paises = await fetch(`${URL_BASE}paises.php`);
+  paises = await paises.json();
 
-    PrenderLoading("Cargando Componentes");
-    let paises = await fetch(`${URL_BASE}paises.php`);
-    paises = await paises.json();
-    
-    let res = ""
-    paises.paises.forEach(p => {
-        res += `<ion-select-option value="${p.id}">${p.name}</ion-select-option>`
-    });
-    dqs("#selectPaises").innerHTML= res
-    loading.dismiss();
-
+  let res = "";
+  paises.paises.forEach((p) => {
+    res += `<ion-select-option value="${p.id}">${p.name}</ion-select-option>`;
+  });
+  dqs("#selectPaises").innerHTML = res;
+  loading.dismiss();
 }
 async function TomarDatosRegistro() {
   let nom = document.querySelector("#txtRegistroNombre").value;
@@ -101,7 +97,7 @@ async function TomarDatosRegistro() {
   }
 
   if (mensajeError) {
-  MostrarToast(mensajeError, 3000);
+    MostrarToast(mensajeError, 3000);
     return;
   }
 
@@ -112,18 +108,16 @@ async function TomarDatosRegistro() {
 
   PrenderLoading("Registrando Sesión");
   let respuesta = await registrarse(usuario);
-  loading.dismiss()
-  if (respuesta.codigo == 200){
-    nav.push("page-home")
-    MostrarToast("Registro Exitoso", 3000)
+  loading.dismiss();
+  if (respuesta.codigo == 200) {
+    nav.push("page-home");
+    MostrarToast("Registro Exitoso", 3000);
     localStorage.setItem("token", respuesta.apyKey);
     localStorage.setItem("id", respuesta.id);
     ArmarMenu();
-
-  }else{
-    MostrarToast("Error en el registro", 3000)
+  } else {
+    MostrarToast("Error en el registro", 3000);
   }
-
 }
 async function registrarse(u) {
   let res = "";
@@ -133,10 +127,9 @@ async function registrarse(u) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(u),
-  })
-    res = await response.json();
-    return res;
-    ;
+  });
+  res = await response.json();
+  return res;
 }
 function TomarDatosLogin() {
   let nom = document.querySelector("#txtLoginNombre").value;
@@ -171,7 +164,7 @@ function TomarDatosLogin() {
       console.log(data);
       if (data.codigo === 200 && data.apiKey) {
         localStorage.setItem("token", data.apiKey);
-        localStorage.setItem("usuarioId", data.id);
+        localStorage.setItem("id", data.id);
         document.querySelector("#label-respuesta-login").innerHTML =
           "Inicio de sesión exitoso.";
         nav.push("page-home");
@@ -204,40 +197,31 @@ function GuardarEjercicio() {
   }
 
   let ejercicio = new Object();
-  ejercicio.usuarioId = localStorage.getItem("usuarioId");
+  ejercicio.usuarioId = localStorage.getItem("id");
   ejercicio.actividadId = act;
   ejercicio.tiempo = tie;
   ejercicio.fecha = fec;
 
   console.log("Ejercicio guardado:", ejercicio);
 }
-function CargarActividades() {
-  let token = localStorage.getItem("token");
+function CargarSelectActividades() {}
+let actividades = null;
 
-  fetch(`${URL_BASE}actividades.php`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      let select = document.querySelector("#selectActividad");
-      select.innerHTML = "";
-
-      if (data.actividades && data.actividades.length > 0) {
-        data.actividades.forEach((actividad) => {
-          let option = document.querySelector("#ion-select-option");
-          option.value = actividad.id;
-          option.textContent = actividad.nombre;
-          select.appendChild(option);
-        });
-      } else {
-        console.error("No se encontraron actividades en la api.");
-      }
-    })
-    .catch((error) => console.error("Error al cargar actividades: ", error));
+async function cargarActividades() {
+  if (actividades == null) {
+    let act = await fetch(`${URL_BASE}actividades.php`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "iduser": localStorage.getItem("id"),
+        "apikey": localStorage.getItem("token"),
+      },
+    });
+    
+    actividades = await act.json();
+    actividades = actividades.actividades
+    console.log(actividades)
+  }
 }
 
 function CerrarSesion() {
