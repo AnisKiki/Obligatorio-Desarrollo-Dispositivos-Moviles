@@ -7,6 +7,7 @@ const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
 const URL_BASE = "https://movetrack.develotion.com/";
 const nav = dqs("ion-nav");
 let actividades = null;
+let modal = null;
 Inicio();
 function dqs(id) {
   return document.querySelector(`${id}`);
@@ -140,7 +141,7 @@ function TomarDatosLogin() {
     mensajeError = "Todos los campos son obligatorios.";
   }
   if (mensajeError) {
-    document.querySelector("#label-respuesta-login").innerHTML = mensajeError;
+    MostrarToast(mensajeError, 3000);
     return;
   }
 
@@ -165,12 +166,11 @@ function TomarDatosLogin() {
       if (data.codigo === 200 && data.apiKey) {
         localStorage.setItem("token", data.apiKey);
         localStorage.setItem("id", data.id);
-        document.querySelector("#label-respuesta-login").innerHTML =
-          "Inicio de sesión exitoso.";
+        MostrarToast("Inicio de sesión exitoso.", 3000);
         nav.push("page-home");
+        ArmarMenu();
       } else {
-        document.querySelector("#label-respuesta-login").innerHTML =
-          "Usuario o contraseña incorrectos.";
+        MostrarToast("Usuario o contraseña incorrectos.", 3000);
       }
     })
     .catch(function (error) {
@@ -178,9 +178,9 @@ function TomarDatosLogin() {
     });
 }
 
-function GuardarEjercicio() {
-  let act = document.querySelector("#selectActividad").value;
-  let tie = document.querySelector("#txtTiempo").value;
+async function GuardarEjercicio() {
+  let act = document.querySelector("#selectActividades").value;
+  let tie = document.querySelector("#timeActividades").value;
   let fec = document.querySelector("#fechaEjercicio").value;
 
   let mensajeError = "";
@@ -191,31 +191,45 @@ function GuardarEjercicio() {
     mensajeError = "El tiempo debe ser mayor a 0.";
   }
   if (mensajeError) {
-    document.querySelector("#label-respuesta-ejercicio").innerHTML =
-      mensajeError;
-    return;
+    MostrarToast(mensajeError, 3000);
   }
 
   let ejercicio = new Object();
-  ejercicio.usuarioId = localStorage.getItem("id");
-  ejercicio.actividadId = act;
+  ejercicio.idUsuario = localStorage.getItem("id");
+  ejercicio.idActividad = act;
   ejercicio.tiempo = tie;
   ejercicio.fecha = fec;
 
-  console.log("Ejercicio guardado:", ejercicio);
+  let response = await registrarEjercicio(ejercicio);
+  if (response.status == 200) {
+    MostrarToast("Actividad registrada correctamente.", 3000);
+  } else {
+    MostrarToast("No se ha podido registrar la actividad.", 3000);
+  }
 }
+async function registrarEjercicio(e) {
+  let res = await fetch(`${URL_BASE}registros.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      iduser: localStorage.getItem("id"),
+      apikey: localStorage.getItem("token"),
+    },
+    body: JSON.stringify(e),
+  });
+  return res;
+}
+
 async function CargarSelectActividades() {
   PrenderLoading("Cargando Componentes");
   await cargarActividades();
   let res = "";
-  console.log(actividades)
-  actividades.forEach(a => {
-    res += `<ion-select-option value="${a.id}">${a.nombre}</ion-select-option>`
+  actividades.forEach((a) => {
+    res += `<ion-select-option value="${a.id}">${a.nombre}</ion-select-option>`;
   });
   dqs("#selectActividades").innerHTML = res;
   loading.dismiss();
 }
-
 
 async function cargarActividades() {
   if (actividades == null) {
@@ -223,24 +237,25 @@ async function cargarActividades() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "iduser": localStorage.getItem("id"),
-        "apikey": localStorage.getItem("token"),
+        iduser: localStorage.getItem("id"),
+        apikey: localStorage.getItem("token"),
       },
     });
-    
+
     actividades = await act.json();
-    actividades = actividades.actividades
-    console.log(actividades)
+    if (actividades.codigo == 200) {
+      actividades = actividades.actividades;
+    } else {
+      MostrarToast("No se pueden cargar las actividades en éste momento", 3000);
+    }
   }
 }
 
 function CerrarSesion() {
   localStorage.removeItem("token");
   localStorage.removeItem("usuarioId");
-  document.querySelector("#label-respuesta-login").innerHTML =
-    "Sesión cerrada.";
-
-  window.location.href = "/";
+  nav.push("page-home");
+  MostrarToast("Sesión cerrada correctamente.", 3000);
   ArmarMenu();
 }
 
@@ -258,7 +273,8 @@ function Navegar(evt) {
     cargarSelectPaises();
     REGISTRO.style.display = "block";
   } else if (ruta == "/registrar-ejercicio") {
-    CargarSelectActividades()
+    CargarSelectActividades();
+    cargarCalendario();
     EJERCICIOS.style.display = "block";
   }
 }
@@ -272,3 +288,26 @@ function OcultarPantalla() {
 function CerrarMenu() {
   MENU.close();
 }
+
+/* Calendario Actividades */
+function confirm() {
+  const input = document.querySelector("ion-input");
+  modal = document.querySelector("ion-modal");
+  modal.dismiss(input.value, "confirm");
+}
+hoy = new Date();
+hoy = hoy.toISOString();
+function cargarCalendario() {
+  dqs("#fechaActiv").innerHTML = `               <ion-label>Fecha</ion-label>
+              <ion-datetime-button id="dateEventoFecha" datetime="fechaEjercicio"></ion-datetime-button>
+              <ion-modal>                <ion-header>
+                    <ion-toolbar>
+                      <ion-title>Fecha</ion-title>
+                      <ion-buttons slot="end">
+                        <ion-button onclick="confirm()" strong="true">Confirmar</ion-button>
+                      </ion-buttons>
+                    </ion-toolbar>
+                  </ion-header>  <ion-datetime presentation="date" id="fechaEjercicio" value="${hoy}" max="${hoy}"></ion-datetime>              </ion-modal>`;
+}
+
+/* Fin calendario Actividades */

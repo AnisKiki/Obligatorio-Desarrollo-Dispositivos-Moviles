@@ -174,14 +174,36 @@
               </ion-item>
             </ion-list>
             <ion-item>
-                <ion-range aria-label="Tiempo (min)" min="0" max="120"  pin="true" ></ion-range>
+
+              <ion-range
+              label="Tiempo (min)"
+              label-placement="stacked"
+                id="timeActividades"
+                aria-label="Custom range"
+                min="0"
+                max="120"
+                pin="true"
+                ticks="true"
+              ></ion-range>
             </ion-item>
-            <ion-item>
-              <ion-label>Fecha</ion-label>
-              <ion-datetime
-                id="fechaEjercicio"
-                value="2024-01-01"
-              ></ion-datetime>
+            <ion-item id="fechaActiv">
+<!--               <ion-label>Fecha</ion-label>
+              <ion-datetime-button id="dateEventoFecha" datetime="fechaEjercicio"></ion-datetime-button>
+              <ion-modal>
+                <ion-header>
+                    <ion-toolbar>
+                      <ion-title>Fecha</ion-title>
+                      <ion-buttons slot="end">
+                        <ion-button onclick="confirm()" strong="true">Confirmar</ion-button>
+                      </ion-buttons>
+                    </ion-toolbar>
+                  </ion-header>
+                <ion-datetime
+                presentation="date"
+                  id="fechaEjercicio"
+                  value="2024-01-01"
+                ></ion-datetime>
+              </ion-modal> -->
             </ion-item>
           </ion-list>
           <ion-button expand="full" id="btnGuardarEjercicio"
