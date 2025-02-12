@@ -4,10 +4,12 @@ const HOME = document.querySelector("#pantalla-home");
 const LOGIN = document.querySelector("#pantalla-login");
 const REGISTRO = document.querySelector("#pantalla-registro");
 const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
+const MIS = document.querySelector("#mis-registros");
 const URL_BASE = "https://movetrack.develotion.com/";
 const nav = dqs("ion-nav");
 let actividades = null;
 let modal = null;
+
 Inicio();
 function dqs(id) {
   return document.querySelector(`${id}`);
@@ -25,6 +27,7 @@ function ArmarMenu() {
   if (hayToken) {
     cadena += `
             <ion-item onclick="CerrarMenu()" href="/registrar-ejercicio">Registrar Ejercicio</ion-item>
+            <ion-item onclick="CerrarMenu()" href="/mis-registros">Mis Registros</ion-item>
             <ion-item onclick="CerrarSesion()">Cerrar Sesión</ion-item>
         `;
   } else {
@@ -40,7 +43,6 @@ const loading = document.createElement("ion-loading");
 function PrenderLoading(texto) {
   loading.cssClass = "my-custom-class";
   loading.message = texto;
-  //loading.duration = 2000;
   document.body.appendChild(loading);
   loading.present();
 }
@@ -276,6 +278,8 @@ function Navegar(evt) {
     CargarSelectActividades();
     cargarCalendario();
     EJERCICIOS.style.display = "block";
+  } else if (ruta == "/mis-registros") {
+    MIS.style.display = "block";
   }
 }
 function OcultarPantalla() {
@@ -283,6 +287,8 @@ function OcultarPantalla() {
   LOGIN.style.display = "none";
   REGISTRO.style.display = "none";
   EJERCICIOS.style.display = "none";
+  MIS.style.display = "none";
+
 }
 
 function CerrarMenu() {

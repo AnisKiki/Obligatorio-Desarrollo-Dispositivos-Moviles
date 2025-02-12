@@ -25,10 +25,8 @@
         <ion-route url="/" component="page-home"></ion-route>
         <ion-route url="/login" component="page-login"></ion-route>
         <ion-route url="/registro" component="page-registro"></ion-route>
-        <ion-route
-          url="/registrar-ejercicio"
-          component="page-registrar-ejercicio"
-        ></ion-route>
+        <ion-route url="/registrar-ejercicio" component="page-registrar-ejercicio"></ion-route>
+        <ion-route url="/mis-registros" component="page-mis-registros"></ion-route>
       </ion-router>
       <ion-nav></ion-nav>
 
@@ -212,6 +210,51 @@
           <ion-label id="label-respuesta-ejercicio"></ion-label>
         </ion-content>
       </page-registrar-ejercicio>
+
+      <page-mis-registros class="ion-page" id="pantalla-mis-registros">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button> </ion-menu-button>
+            </ion-buttons>
+            <ion-title>Registrar Ejercicio</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list>
+            <ion-list>
+              <ion-item>
+                <ion-select
+                  id="selectActividades"
+                  interface="popover"
+                  placeholder="Seleccione Actividad"
+                >
+                  <div slot="label">Actividad</div>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+            <ion-item>
+
+              <ion-range
+              label="Tiempo (min)"
+              label-placement="stacked"
+                id="timeActividades"
+                aria-label="Custom range"
+                min="0"
+                max="120"
+                pin="true"
+                ticks="true"
+              ></ion-range>
+            </ion-item>
+          </ion-list>
+          <ion-button expand="full" id="btnGuardarEjercicio"
+            >Guardar Ejercicio</ion-button
+          >
+          <ion-label id="label-respuesta-ejercicio"></ion-label>
+        </ion-content>
+      </page-mis-registros>
+
+
     </ion-app>
 
     <script src="js/code.js"></script>
