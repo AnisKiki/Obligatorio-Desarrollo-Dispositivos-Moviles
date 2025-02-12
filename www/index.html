@@ -1,167 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mi App</title>
-    <link rel="stylesheet" href="global.css">
-    <script 
-        type="module" 
-        src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    <link rel="stylesheet" href="global.css" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
     ></script>
-    <script 
-        nomodule 
-        src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
     ></script>
-    <link 
-        rel="stylesheet" 
-        href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
     />
-    
-</head>
-<body>
+  </head>
+  <body>
     <ion-app>
-        <!-- Componente de ruteo -->
-        <ion-router id="ruteo">
-            <ion-route url="/" component="page-home"></ion-route>
-            <ion-route url="/login" component="page-login"></ion-route>
-            <ion-route url="/registro" component="page-registro"></ion-route>
-            <ion-route url="/registrar-ejercicio" component="page-registrar-ejercicio"></ion-route>
-        </ion-router>
-        <ion-nav></ion-nav>
+      <!-- Componente de ruteo -->
+      <ion-router id="ruteo">
+        <ion-route url="/" component="page-home"></ion-route>
+        <ion-route url="/login" component="page-login"></ion-route>
+        <ion-route url="/registro" component="page-registro"></ion-route>
+        <ion-route
+          url="/registrar-ejercicio"
+          component="page-registrar-ejercicio"
+        ></ion-route>
+      </ion-router>
+      <ion-nav></ion-nav>
 
-        <!-- MENU -->
-        <ion-menu side="start" menu-id="first" content-id="main" id="menu">
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <iont-title>Menu</iont-title>
-                </ion-toolbar>
-            </ion-header>
-            <ion-content>
-                <ion-list id="menu-opciones">
+      <!-- MENU -->
+      <ion-menu side="start" menu-id="first" content-id="main" id="menu">
+        <ion-header>
+          <ion-toolbar color="primary">
+            <iont-title>Menu</iont-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list id="menu-opciones"> </ion-list>
+        </ion-content>
+      </ion-menu>
+      <div id="main"></div>
 
-                </ion-list>
-            </ion-content>
-        </ion-menu>
-        <div id="main"></div>
+      <page-home class="ion-page" id="pantalla-home">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button>
+                <ion-icon name="menu-outline"></ion-icon>
+              </ion-menu-button>
+            </ion-buttons>
+            <ion-title>Nuestra App</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-text color="tertiary">
+            <h3>
+              Taller de dispositivos moviles<br /><ion-text color="danger"
+                >Nicolas Ceglan - Nadyr Miguel</ion-text
+              >
+            </h3>
+          </ion-text>
+        </ion-content>
+      </page-home>
 
-        <page-home class="ion-page" id="pantalla-home">
-            <ion-header>
-               <ion-toolbar>
-                    <ion-buttons slot="start">
-                        <ion-menu-button>
-                            <ion-icon name="menu-outline"></ion-icon>
-                        </ion-menu-button>
-                    </ion-buttons>
-                    <ion-title>Nuestra App</ion-title>
-                </ion-toolbar>
-            </ion-header>   
-            <ion-content>
-                <ion-text color="tertiary">
-                    <h3>Taller de dispositivos moviles<br><ion-text color="danger">Nicolas Ceglan - Nadyr Miguel</ion-text></h3>
-                </ion-text>
-            </ion-content>
-        </page-home>
+      <page-login class="ion-page" id="pantalla-login">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button> </ion-menu-button>
+            </ion-buttons>
+            <ion-title>Login</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list>
+            <ion-item>
+              <ion-input
+                label="Nombre"
+                id="txtLoginNombre"
+                label-placement="floating"
+                placeholder="Nombre de Usuario"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input
+                label="Password"
+                id="txtLoginPassword"
+                type="Password"
+                label-placement="floating"
+                placeholder="Password"
+              ></ion-input>
+            </ion-item>
+          </ion-list>
 
-        <page-login class="ion-page" id="pantalla-login">
-            <ion-header>
-               <ion-toolbar>
-                    <ion-buttons slot="start">
-                       <ion-menu-button>
+          <ion-button expand="full" id="btnLogin">Ingresar</ion-button>
+          <ion-label id="label-respuesta-login"></ion-label>
+        </ion-content>
+      </page-login>
 
-                       </ion-menu-button>
-                    </ion-buttons>
-                    <ion-title>Login</ion-title>
-                </ion-toolbar>
-            </ion-header>   
-            <ion-content>
-                <ion-list>
-                    <ion-item>
-                        <ion-input label="Nombre" id="txtLoginNombre" label-placement="floating" placeholder="Nombre de Usuario"></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-input label="Password" id="txtLoginPassword" type="Password" label-placement="floating" placeholder="Password"></ion-input>
-                    </ion-item>
-                </ion-list>
-        
-                <ion-button expand="full" id="btnLogin">Ingresar</ion-button>
-                <ion-label id="label-respuesta-login"></ion-label>  
-            </ion-content>
-        </page-login>
+      <page-registro class="ion-page" id="pantalla-registro">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button> </ion-menu-button>
+            </ion-buttons>
+            <ion-title>Registro</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list>
+            <ion-item>
+              <ion-input
+                label="Nombre"
+                id="txtRegistroNombre"
+                label-placement="floating"
+                placeholder="Nombre de Usuario"
+              ></ion-input>
+            </ion-item>
+            <ion-list>
+              <ion-item>
+                <ion-select
+                  id="selectPaises"
+                  interface="popover"
+                  placeholder="Seleccione un Pais"
+                >
+                  <div slot="label">Pais</div>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+            <ion-item>
+              <ion-input
+                label="Password"
+                id="txtRegistroPassword"
+                type="Password"
+                label-placement="floating"
+                placeholder="Password"
+              ></ion-input>
+            </ion-item>
+          </ion-list>
 
-        <page-registro class="ion-page" id="pantalla-registro">
-            <ion-header>
-               <ion-toolbar>
-                    <ion-buttons slot="start">
-                       <ion-menu-button>
+          <ion-button expand="full" id="btnRegistro">Registrar</ion-button>
+          <ion-label id="label-respuesta-registro"></ion-label>
+        </ion-content>
+      </page-registro>
 
-                       </ion-menu-button>
-                    </ion-buttons>
-                    <ion-title>Registro</ion-title>
-                </ion-toolbar>
-            </ion-header>   
-            <ion-content>
-                <ion-list>
-                    <ion-item>
-                        <ion-input label="Nombre" id="txtRegistroNombre" label-placement="floating" placeholder="Nombre de Usuario"></ion-input>
-                    </ion-item>
-                    <ion-list>
-                        <ion-item>
-                          <ion-select id="selectPaises" interface="popover" placeholder="Seleccione un Pais">
-                            <div slot="label">Pais</div>
-
-                          </ion-select>
-                        </ion-item>
-                      </ion-list>
-                    <ion-item>
-                        <ion-input label="Password" id="txtRegistroPassword" type="Password" label-placement="floating" placeholder="Password"></ion-input>
-                    </ion-item>
-                </ion-list>
-        
-                <ion-button expand="full" id="btnRegistro">Registrar</ion-button>
-                <ion-label id="label-respuesta-registro"></ion-label>
-            </ion-content>
-        </page-registro>
-
-        <page-registrar-ejercicio class="ion-page" id="pantalla-registrar-ejercicio">
-            <ion-header>
-               <ion-toolbar>
-                    <ion-buttons slot="start">
-                       <ion-menu-button>
-
-                       </ion-menu-button>
-                    </ion-buttons>
-                    <ion-title>Registrar Ejercicio</ion-title>
-                </ion-toolbar>
-            </ion-header>   
-            <ion-content>
-                <ion-list>
-                    <ion-item>
-                        <ion-label>Actividad</ion-label>
-                        <ion-select id="selectActividad"
-                        placeholder="Selecciona una actividad">
-
-                        </ion-select>
-                    </ion-item>
-                    <ion-item>
-                        <ion-input label="Tiempo (min)" id="txtTiempo" 
-                        type="number" 
-                        label-placement="floating"
-                        placeholder="Tiempo en minutos"></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>Fecha</ion-label>
-                        <ion-datetime id="fechaEjercicio" value="2024-01-01"></ion-datetime>
-                    </ion-item>
-                </ion-list>
-                <ion-button expand="full" id="btnGuardarEjercicio">Guardar Ejercicio</ion-button>
-                <ion-label id="label-respuesta-ejercicio"></ion-label> 
-            </ion-content>
-        </page-registrar-ejercicio>
-
+      <page-registrar-ejercicio
+        class="ion-page"
+        id="pantalla-registrar-ejercicio"
+      >
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button> </ion-menu-button>
+            </ion-buttons>
+            <ion-title>Registrar Ejercicio</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list>
+            <ion-list>
+              <ion-item>
+                <ion-select
+                  id="selectActividades"
+                  interface="popover"
+                  placeholder="Seleccione Actividad"
+                >
+                  <div slot="label">Actividad</div>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+            <ion-item>
+                <ion-range aria-label="Tiempo (min)" min="0" max="120"  pin="true" ></ion-range>
+            </ion-item>
+            <ion-item>
+              <ion-label>Fecha</ion-label>
+              <ion-datetime
+                id="fechaEjercicio"
+                value="2024-01-01"
+              ></ion-datetime>
+            </ion-item>
+          </ion-list>
+          <ion-button expand="full" id="btnGuardarEjercicio"
+            >Guardar Ejercicio</ion-button
+          >
+          <ion-label id="label-respuesta-ejercicio"></ion-label>
+        </ion-content>
+      </page-registrar-ejercicio>
     </ion-app>
 
-
     <script src="js/code.js"></script>
-</body>
+  </body>
 </html>

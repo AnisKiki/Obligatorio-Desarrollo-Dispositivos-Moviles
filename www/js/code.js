@@ -6,7 +6,7 @@ const REGISTRO = document.querySelector("#pantalla-registro");
 const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
 const URL_BASE = "https://movetrack.develotion.com/";
 const nav = dqs("ion-nav");
-
+let actividades = null;
 Inicio();
 function dqs(id) {
   return document.querySelector(`${id}`);
@@ -204,8 +204,18 @@ function GuardarEjercicio() {
 
   console.log("Ejercicio guardado:", ejercicio);
 }
-function CargarSelectActividades() {}
-let actividades = null;
+async function CargarSelectActividades() {
+  PrenderLoading("Cargando Componentes");
+  await cargarActividades();
+  let res = "";
+  console.log(actividades)
+  actividades.forEach(a => {
+    res += `<ion-select-option value="${a.id}">${a.nombre}</ion-select-option>`
+  });
+  dqs("#selectActividades").innerHTML = res;
+  loading.dismiss();
+}
+
 
 async function cargarActividades() {
   if (actividades == null) {
@@ -248,6 +258,7 @@ function Navegar(evt) {
     cargarSelectPaises();
     REGISTRO.style.display = "block";
   } else if (ruta == "/registrar-ejercicio") {
+    CargarSelectActividades()
     EJERCICIOS.style.display = "block";
   }
 }
