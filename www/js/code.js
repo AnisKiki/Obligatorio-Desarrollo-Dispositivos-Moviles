@@ -5,6 +5,7 @@ const LOGIN = document.querySelector("#pantalla-login");
 const REGISTRO = document.querySelector("#pantalla-registro");
 const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
 const MIS = document.querySelector("#pantalla-mis-registros");
+const MAPA = document.querySelector("#pantalla-mapa");
 const URL_BASE = "https://movetrack.develotion.com/";
 const nav = dqs("ion-nav");
 let actividades = null;
@@ -28,6 +29,7 @@ function ArmarMenu() {
     cadena += `
             <ion-item onclick="CerrarMenu()" href="/registrar-ejercicio">Registrar Ejercicio</ion-item>
             <ion-item onclick="CerrarMenu()" href="/mis-registros">Mis Registros</ion-item>
+            <ion-item onclick="CerrarMenu()" href="/mapa">Mapa de Usuarios</ion-item>
             <ion-item onclick="CerrarSesion()">Cerrar Sesión</ion-item>
         `;
   } else {
@@ -280,6 +282,8 @@ function Navegar(evt) {
     EJERCICIOS.style.display = "block";
   } else if (ruta == "/mis-registros") {
     MIS.style.display = "block";
+  }else if (ruta == "/mapa") {
+    MAPA.style.display = "block";
   }
 }
 function OcultarPantalla() {
@@ -288,6 +292,7 @@ function OcultarPantalla() {
   REGISTRO.style.display = "none";
   EJERCICIOS.style.display = "none";
   MIS.style.display = "none";
+  MAPA.style.display = "none";
 }
 
 function CerrarMenu() {
@@ -303,16 +308,20 @@ function confirm() {
 hoy = new Date();
 hoy = hoy.toISOString();
 function cargarCalendario() {
-  dqs("#fechaActiv").innerHTML = `               <ion-label>Fecha</ion-label>
-              <ion-datetime-button id="dateEventoFecha" datetime="fechaEjercicio"></ion-datetime-button>
-              <ion-modal>                <ion-header>
-                    <ion-toolbar>
-                      <ion-title>Fecha</ion-title>
-                      <ion-buttons slot="end">
-                        <ion-button onclick="confirm()" strong="true">Confirmar</ion-button>
-                      </ion-buttons>
-                    </ion-toolbar>
-                  </ion-header>  <ion-datetime presentation="date" id="fechaEjercicio" value="${hoy}" max="${hoy}"></ion-datetime>              </ion-modal>`;
+  dqs("#fechaActiv").innerHTML = `
+  <ion-label>Fecha</ion-label>
+  <ion-datetime-button id="dateEventoFecha" datetime="fechaEjercicio"></ion-datetime-button>
+  <ion-modal>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Fecha</ion-title>
+        <ion-buttons slot="end">
+          <ion-button onclick="confirm()" strong="true">Confirmar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>  
+    <ion-datetime presentation="date" id="fechaEjercicio" value="${hoy}" max="${hoy}"></ion-datetime>
+  </ion-modal>`;
 }
 
 /* Fin calendario Actividades */

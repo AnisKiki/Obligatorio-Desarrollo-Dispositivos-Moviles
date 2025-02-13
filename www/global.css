@@ -55,6 +55,10 @@ ion-menu ion-list{
 }
 */
 
+#map { 
+    height: 580px; 
+}
+
 ion-range::part(pin) {
     display: inline-flex;
     align-items: center;
