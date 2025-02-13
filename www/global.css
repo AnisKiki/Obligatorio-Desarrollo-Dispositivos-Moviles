@@ -53,9 +53,9 @@ ion-menu ion-item::part(native){
 ion-menu ion-list{
     padding: 10px 0;
 }
- */
+*/
 
- ion-range::part(pin) {
+ion-range::part(pin) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -70,4 +70,32 @@ ion-menu ion-list{
     min-width: 28px;
     height: 28px;
     transition: transform 120ms ease, background 120ms ease;
-  }
+}
+
+ion-radio {
+    --border-radius: 4px;
+    --inner-border-radius: 4px;
+
+    --color: #ddd;
+    --color-checked: #a50000;
+}
+
+ion-radio.ios::part(container) {
+    width: 20px;
+    height: 20px;
+
+    border: 2px solid #bd98c6;
+    border-radius: 4px;
+}
+
+.radio-checked.ios::part(container) {
+    border-color: #a50000;
+}
+  
+/* ion-col {
+    background-color: #135d54;
+    border: solid 1px #fff;
+    color: #fff;
+    text-align: center;
+} */
+ 
