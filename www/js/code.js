@@ -305,8 +305,14 @@ function confirm() {
   modal = document.querySelector("ion-modal");
   modal.dismiss(input.value, "confirm");
 }
-hoy = new Date();
-hoy = hoy.toISOString();
+
+// Formateo de fecha a formato ISO 8601 ayuda por parte de ChatGPT
+let fecha = new Date(); 
+let anio = fecha.getFullYear();
+let mes = String(fecha.getMonth() + 1).padStart(2, '0'); 
+let dia = String(fecha.getDate()).padStart(2, '0');
+
+let hoy = `${anio}-${mes}-${dia}T14:48:00.000Z`;
 function cargarCalendario() {
   dqs("#fechaActiv").innerHTML = `
   <ion-label>Fecha</ion-label>
@@ -323,5 +329,21 @@ function cargarCalendario() {
     <ion-datetime presentation="date" id="fechaEjercicio" value="${hoy}" max="${hoy}"></ion-datetime>
   </ion-modal>`;
 }
-
 /* Fin calendario Actividades */
+
+async function CargarSliderRegistros(){
+  let registros = await obtenerRegistros();
+}
+
+async function obtenerRegistros(){
+  let ret = fetch(`${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      iduser: localStorage.getItem("id"),
+      apikey: localStorage.getItem("token"),
+    },
+  });
+  ret = await ret.json();
+  console.log(a);
+}

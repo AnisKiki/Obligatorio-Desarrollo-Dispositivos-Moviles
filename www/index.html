@@ -200,8 +200,7 @@
                 <ion-select
                   id="selectActividades"
                   interface="popover"
-                  placeholder="Seleccione Actividad"
-                >
+                  placeholder="Seleccione Actividad">
                   <div slot="label">Actividad</div>
                 </ion-select>
               </ion-item>
@@ -220,7 +219,7 @@
               ></ion-range>
             </ion-item>
             <ion-item id="fechaActiv">
-       <!--           <ion-label>Fecha</ion-label>
+              <!-- <ion-label>Fecha</ion-label>
               <ion-datetime-button id="dateEventoFecha" datetime="fechaEjercicio"></ion-datetime-button>
               <ion-modal>
                 <ion-header>
@@ -258,39 +257,23 @@
         <ion-content>
           <ion-list>
             <ion-item-divider>
-              <ion-radio-group id="filtroRegistro" value="custom-checked">
-                <ion-radio value="semana" aria-label="Custom checkbox">Semana</ion-radio>
-                <ion-radio value="mes" aria-label="Custom checkbox that is checked">Mes</ion-radio>
-                <ion-radio value="completo" aria-label="Custom checkbox">Completo</ion-radio>
+              <ion-radio-group value="custom-checked">
+                <ion-radio id="s" class="filtroMisActividades" value="semana" aria-label="Custom checkbox">Semana</ion-radio>
+                <ion-radio id="m" class="filtroMisActividades" value="mes" aria-label="Custom checkbox that is checked">Mes</ion-radio>
+                <ion-radio id="c" class="filtroMisActividades" value="completo" aria-label="Custom checkbox">Completo</ion-radio>
               </ion-radio-group>
             </ion-item-divider>
-            <ion-item>
-              <ion-list>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size-md="6">Actividad</ion-col>
-                    <ion-col size-md="6">Tiempo</ion-col>
-                    <ion-col size-md="12">Fecha</ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-list>
-            </ion-item>
-            <ion-item>
-              <ion-list id="lista-ejercicios">
-                <ion-item-sliding>
-                  <ion-item>
-                    <ion-label> aqui se cargaran los datos dinamicamente</ion-label>
-                  </ion-item>
-             
-                  <ion-item-options side="end">
-                    <ion-item-option color="danger">
-                      <ion-icon slot="start" name="trash"></ion-icon>
-                        Eliminar
-                    </ion-item-option>
-                  </ion-item-options>
-                </ion-item-sliding>
-              </ion-list>
-            </ion-item>
+          </ion-list>
+          <ion-list id="sliderRegistros">
+            <!-- <ion-item-sliding>
+              <ion-item>
+                <ion-label>Sliding Item with End Options</ion-label>
+              </ion-item>
+          
+              <ion-item-options>
+                <ion-item-option color="danger">Delete</ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding> -->
           </ion-list>
         </ion-content>
       </page-mis-registros>
