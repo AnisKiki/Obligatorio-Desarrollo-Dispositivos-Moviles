@@ -336,8 +336,8 @@ async function CargarSliderRegistros(){
 }
 
 async function obtenerRegistros(){
-  let ret = "";
-  ret = fetch(`${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,  {
+  
+  let ret = fetch(`${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,  {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -345,12 +345,11 @@ async function obtenerRegistros(){
       apikey: localStorage.getItem("token"),
     },
   });
-
-  if(ret.status == 200){
+  console.log(ret)
+  if((await ret).status){
     ret = (await ret).json();
   }else{
     MostrarToast("No se pudieron obtener los registros.", 3000);
   }
-  console.log(ret.registros);
-  return ret.registros;
+  return ((await ret).registros);
 }
