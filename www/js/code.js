@@ -117,7 +117,7 @@ async function TomarDatosRegistro() {
   if (respuesta.codigo == 200) {
     nav.push("page-home");
     MostrarToast("Registro Exitoso", 3000);
-    localStorage.setItem("token", respuesta.apyKey);
+    localStorage.setItem("token", respuesta.apiKey);
     localStorage.setItem("id", respuesta.id);
     ArmarMenu();
   } else {
@@ -203,7 +203,6 @@ async function GuardarEjercicio() {
   ejercicio.idActividad = act;
   ejercicio.tiempo = tie;
   ejercicio.fecha = fec;
-
   let response = await registrarEjercicio(ejercicio);
   if (response.status == 200) {
     MostrarToast("Actividad registrada correctamente.", 3000);
@@ -229,6 +228,7 @@ async function CargarSelectActividades() {
   await cargarActividades();
   let res = "";
   actividades.forEach((a) => {
+    
     res += `<ion-select-option value="${a.id}">${a.nombre}</ion-select-option>`;
   });
   dqs("#selectActividades").innerHTML = res;
@@ -281,6 +281,7 @@ function Navegar(evt) {
     cargarCalendario();
     EJERCICIOS.style.display = "block";
   } else if (ruta == "/mis-registros") {
+    
     CargarSliderRegistros();
     MIS.style.display = "block";
   }else if (ruta == "/mapa") {
@@ -332,26 +333,47 @@ function cargarCalendario() {
 }
 /* Fin calendario Actividades */
 
-async function CargarSliderRegistros(){
+
+/* Error
+https://github.com/ionic-team/ionic-framework/issues/29499 */
+async function CargarSliderRegistros() {
+  PrenderLoading("Cargando componentes.")
+  /* Soy dios */
+  let sliderRegistros = document.querySelector("#sliderRegistros");
+
+  if (sliderRegistros.children.length > 0) {
+    location.reload();
+  }
   let registros = await obtenerRegistros();
   let ret = "";
-  registros.forEach(r => {
+  
+  for (let r of registros) {
+    const actividad = await actividadById(r.idActividad);
+
     ret += `
-    <ion-item-sliding>
-      <ion-item>
-        <ion-label>${actividadById(r.idActividad)}</ion-label>
-          </ion-item>
-          
-          <ion-item-options>
-        <ion-item-option color="danger">Delete</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>`
-  });
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>${actividad.nombre}, ${r.tiempo}(min), ${r.fecha}</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option id="${r.id}" color="danger" onclick="eliminarRegistro('${r.id}')">Eliminar</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>`;
+  }
+
   dqs("#sliderRegistros").innerHTML = ret;
+  loading.dismiss()
 }
-function actividadById(id){
-  cargarActividades();
+
+function eliminarRegistro(idRegistro) {
+  console.log(`Eliminar registro con ID: ${idRegistro}`);
+
+}
+
+async function actividadById(id){
+  await cargarActividades();
   let ret = null;
+
   actividades.forEach(a => {
     if(a.id == id){
       ret = a;
@@ -369,13 +391,13 @@ async function obtenerRegistros(){
       apikey: localStorage.getItem("token"),
     },
   });
-  console.log(ret)
+
   if((await ret).status){
     ret = (await ret).json();
   }else{
     MostrarToast("No se pudieron obtener los registros.", 3000);
   }
-  console.log((await ret).registros);
+
   return ((await ret).registros);
   
 }
