@@ -281,6 +281,7 @@ function Navegar(evt) {
     cargarCalendario();
     EJERCICIOS.style.display = "block";
   } else if (ruta == "/mis-registros") {
+    CargarSliderRegistros();
     MIS.style.display = "block";
   }else if (ruta == "/mapa") {
     MAPA.style.display = "block";
@@ -333,10 +334,33 @@ function cargarCalendario() {
 
 async function CargarSliderRegistros(){
   let registros = await obtenerRegistros();
+  let ret = "";
+  registros.forEach(r => {
+    ret += `
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>${actividadById(r.idActividad)}</ion-label>
+          </ion-item>
+          
+          <ion-item-options>
+        <ion-item-option color="danger">Delete</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>`
+  });
+  dqs("#sliderRegistros").innerHTML = ret;
+}
+function actividadById(id){
+  cargarActividades();
+  let ret = null;
+  actividades.forEach(a => {
+    if(a.id == id){
+      ret = a;
+    }
+  });
+  return ret;
 }
 
 async function obtenerRegistros(){
-  
   let ret = fetch(`${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,  {
     method: "GET",
     headers: {
@@ -351,5 +375,7 @@ async function obtenerRegistros(){
   }else{
     MostrarToast("No se pudieron obtener los registros.", 3000);
   }
+  console.log((await ret).registros);
   return ((await ret).registros);
+  
 }
