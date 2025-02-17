@@ -6,6 +6,7 @@ const REGISTRO = document.querySelector("#pantalla-registro");
 const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
 const MIS = document.querySelector("#pantalla-mis-registros");
 const MAPA = document.querySelector("#pantalla-mapa");
+const ESTADISTICAS = document.querySelector("#pantalla-estadisticas");
 const URL_BASE = "https://movetrack.develotion.com/";
 const UIMG = "https://movetrack.develotion.com/imgs/";
 const nav = dqs("ion-nav");
@@ -28,6 +29,7 @@ function ArmarMenu() {
   let cadena = `<ion-item onclick="CerrarMenu()" href="/">Home</ion-item>`;
   if (hayToken) {
     cadena += `
+            <ion-item onclick="CerrarMenu()" href="/estadisticas">Estadisticas</ion-item>
             <ion-item onclick="CerrarMenu()" href="/registrar-ejercicio">Registrar Ejercicio</ion-item>
             <ion-item onclick="CerrarMenu()" href="/mis-registros">Mis Registros</ion-item>
             <ion-item onclick="CerrarMenu()" href="/mapa">Mapa de Usuarios</ion-item>
@@ -285,6 +287,8 @@ function Navegar(evt) {
     MIS.style.display = "block";
   } else if (ruta == "/mapa") {
     MAPA.style.display = "block";
+  } else if (ruta == "/estadisticas") {
+    ESTADISTICAS.style.display = "block";
   }
 }
 function OcultarPantalla() {
@@ -294,6 +298,7 @@ function OcultarPantalla() {
   EJERCICIOS.style.display = "none";
   MIS.style.display = "none";
   MAPA.style.display = "none";
+  ESTADISTICAS.style.display = "none";
 }
 
 function CerrarMenu() {
@@ -416,14 +421,12 @@ async function registrosFiltrados(c) {
   fechaHaceUnaSemana.setDate(fechaHaceUnaSemana.getDate() - 8);
   let fechaHaceUnMes = new Date();
   fechaHaceUnMes.setDate(fechaHaceUnMes.getDate() - 32);
-  console.log(fechaHaceUnMes)
   switch (c) {
     case "3":
       ret = registros;
       break;
     case "1":
       registros.forEach((r) => {
-        console.log(Date.parse(r.fecha))
         if (Date.parse(r.fecha) >= fechaHaceUnaSemana) {
           ret.push(r);
           
@@ -432,8 +435,14 @@ async function registrosFiltrados(c) {
       break;
     case "2":
       registros.forEach((r) => {
-        console.log(Date.parse(r.fecha), fechaHaceUnMes)
         if (Date.parse(r.fecha) >= fechaHaceUnMes) {
+          ret.push(r);
+        }
+      });
+      break;
+      case "4":
+      registros.forEach((r) => {
+        if (Date.parse(r.fecha) == hoy) {
           ret.push(r);
         }
       });
@@ -442,7 +451,6 @@ async function registrosFiltrados(c) {
       ret = registros;
       break;
   }
-  console.log(ret)
   return ret;
 }
 
@@ -466,4 +474,20 @@ async function obtenerRegistros() {
   }
 
   return (await ret).registros;
+}
+
+async function obtenerTiempo(t){
+  let tiempo = 0;
+  if(t == 1){ 
+    let registros = await registrosFiltrados(4);
+    for (let r of registros) {
+      tiempo += (await r).tiempo;
+    }
+  }else{
+    let registros = await registrosFiltrados(3);
+    for (let r of registros) {
+      tiempo += (await r).tiempo;
+    }
+  }
+  return tiempo; 
 }
