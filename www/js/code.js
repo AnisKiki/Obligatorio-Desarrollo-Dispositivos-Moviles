@@ -7,6 +7,7 @@ const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
 const MIS = document.querySelector("#pantalla-mis-registros");
 const MAPA = document.querySelector("#pantalla-mapa");
 const URL_BASE = "https://movetrack.develotion.com/";
+const UIMG = "https://movetrack.develotion.com/imgs/";
 const nav = dqs("ion-nav");
 let actividades = null;
 let modal = null;
@@ -228,7 +229,6 @@ async function CargarSelectActividades() {
   await cargarActividades();
   let res = "";
   actividades.forEach((a) => {
-    
     res += `<ion-select-option value="${a.id}">${a.nombre}</ion-select-option>`;
   });
   dqs("#selectActividades").innerHTML = res;
@@ -281,10 +281,9 @@ function Navegar(evt) {
     cargarCalendario();
     EJERCICIOS.style.display = "block";
   } else if (ruta == "/mis-registros") {
-    
     CargarSliderRegistros();
     MIS.style.display = "block";
-  }else if (ruta == "/mapa") {
+  } else if (ruta == "/mapa") {
     MAPA.style.display = "block";
   }
 }
@@ -309,10 +308,10 @@ function confirm() {
 }
 
 // Formateo de fecha a formato ISO 8601 ayuda por parte de ChatGPT
-let fecha = new Date(); 
+let fecha = new Date();
 let anio = fecha.getFullYear();
-let mes = String(fecha.getMonth() + 1).padStart(2, '0'); 
-let dia = String(fecha.getDate()).padStart(2, '0');
+let mes = String(fecha.getMonth() + 1).padStart(2, "0");
+let dia = String(fecha.getDate()).padStart(2, "0");
 
 let hoy = `${anio}-${mes}-${dia}T14:48:00.000Z`;
 function cargarCalendario() {
@@ -333,11 +332,10 @@ function cargarCalendario() {
 }
 /* Fin calendario Actividades */
 
-
 /* Error
 https://github.com/ionic-team/ionic-framework/issues/29499 */
 async function CargarSliderRegistros() {
-  PrenderLoading("Cargando componentes.")
+  PrenderLoading("Cargando componentes.");
   /* Soy dios */
   let sliderRegistros = document.querySelector("#sliderRegistros");
 
@@ -346,58 +344,69 @@ async function CargarSliderRegistros() {
   }
   let registros = await obtenerRegistros();
   let ret = "";
-  
+
   for (let r of registros) {
     const actividad = await actividadById(r.idActividad);
 
     ret += `
       <ion-item-sliding>
         <ion-item>
-          <ion-label>${actividad.nombre}, ${r.tiempo}(min), ${r.fecha}</ion-label>
+        <ion-thumbnail slot="start">
+          <ion-img slot="start"
+          src="${UIMG + actividad.imagen + ".png"}"
+          alt="${actividad.nombre}">
+        </ion-thumbnail>
+          <ion-label class="labelRegistros">
+          ${actividad.nombre}, ${r.tiempo}(min), ${r.fecha}</ion-label>
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option id="${r.id}" color="danger" onclick="eliminarRegistro('${r.id}')">Eliminar</ion-item-option>
+          <ion-item-option id="${
+            r.id
+          }" color="danger" onclick="eliminarRegistro('${
+      r.id
+    }')">Eliminar</ion-item-option>
         </ion-item-options>
       </ion-item-sliding>`;
   }
 
   dqs("#sliderRegistros").innerHTML = ret;
-  loading.dismiss()
+  loading.dismiss();
 }
 
 function eliminarRegistro(idRegistro) {
   console.log(`Eliminar registro con ID: ${idRegistro}`);
-
 }
 
-async function actividadById(id){
+async function actividadById(id) {
   await cargarActividades();
   let ret = null;
 
-  actividades.forEach(a => {
-    if(a.id == id){
+  actividades.forEach((a) => {
+    if (a.id == id) {
       ret = a;
     }
   });
   return ret;
 }
 
-async function obtenerRegistros(){
-  let ret = fetch(`${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,  {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      iduser: localStorage.getItem("id"),
-      apikey: localStorage.getItem("token"),
-    },
-  });
+async function obtenerRegistros() {
+  let ret = fetch(
+    `${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        iduser: localStorage.getItem("id"),
+        apikey: localStorage.getItem("token"),
+      },
+    }
+  );
 
-  if((await ret).status){
+  if ((await ret).status) {
     ret = (await ret).json();
-  }else{
+  } else {
     MostrarToast("No se pudieron obtener los registros.", 3000);
   }
 
-  return ((await ret).registros);
-  
+  return (await ret).registros;
 }
