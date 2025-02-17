@@ -351,11 +351,11 @@ async function CargarSliderRegistros() {
     ret += `
       <ion-item-sliding>
         <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-img slot="start"
+        <ion-item slot="start">
+          <ion-img class="imgRegistros"
           src="${UIMG + actividad.imagen + ".png"}"
           alt="${actividad.nombre}">
-        </ion-thumbnail>
+        </ion-item>
           <ion-label class="labelRegistros">
           ${actividad.nombre}, ${r.tiempo}(min), ${r.fecha}</ion-label>
         </ion-item>

@@ -102,3 +102,7 @@ ion-radio.ios::part(container) {
     color: #fff;
     text-align: center;
 } */
+.imgRegistros{
+    height: 76%;
+    width: 76%;
+}
