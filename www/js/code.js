@@ -342,7 +342,8 @@ async function CargarSliderRegistros() {
   if (sliderRegistros.children.length > 0) {
     location.reload();
   }
-  let registros = await obtenerRegistros();
+
+  let registros = await registrosFiltrados(localStorage.getItem("filtroRegistros"));
   let ret = "";
 
   for (let r of registros) {
@@ -373,10 +374,25 @@ async function CargarSliderRegistros() {
   loading.dismiss();
 }
 
-function eliminarRegistro(idRegistro) {
-  console.log(`Eliminar registro con ID: ${idRegistro}`);
+async function eliminarRegistro(idRegistro) {
+  let ret = await dropRegistro(idRegistro);
+  location.reload();
 }
-
+async function dropRegistro(id) {
+  let ret = false;
+  let response = fetch(`${URL_BASE}/registros.php?idRegistro=${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      iduser: localStorage.getItem("id"),
+      apikey: localStorage.getItem("token"),
+    },
+  });
+  if ((await response).json().status == 200) {
+    ret = true;
+  }
+  return ret;
+}
 async function actividadById(id) {
   await cargarActividades();
   let ret = null;
@@ -386,6 +402,47 @@ async function actividadById(id) {
       ret = a;
     }
   });
+  return ret;
+}
+function filtroRegistro(condicion){
+  localStorage.setItem("filtroRegistros", condicion);
+  location.reload();
+  
+}
+async function registrosFiltrados(c) {
+  let ret = [];
+  let registros = await obtenerRegistros();
+  let fechaHaceUnaSemana = new Date();
+  fechaHaceUnaSemana.setDate(fechaHaceUnaSemana.getDate() - 8);
+  let fechaHaceUnMes = new Date();
+  fechaHaceUnMes.setDate(fechaHaceUnMes.getDate() - 32);
+  console.log(fechaHaceUnMes)
+  switch (c) {
+    case "3":
+      ret = registros;
+      break;
+    case "1":
+      registros.forEach((r) => {
+        console.log(Date.parse(r.fecha))
+        if (Date.parse(r.fecha) >= fechaHaceUnaSemana) {
+          ret.push(r);
+          
+        }
+      });
+      break;
+    case "2":
+      registros.forEach((r) => {
+        console.log(Date.parse(r.fecha), fechaHaceUnMes)
+        if (Date.parse(r.fecha) >= fechaHaceUnMes) {
+          ret.push(r);
+        }
+      });
+      break;
+      default:
+      ret = registros;
+      break;
+  }
+  console.log(ret)
   return ret;
 }
 
