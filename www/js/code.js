@@ -552,14 +552,14 @@ function getLocation() {
 }
 function mostrarMiUbicacion(position) {
   MiLat = position.coords.latitude;
-  Milong = position.coords.longitude;
+  MiLong = position.coords.longitude;
   CrearMapa();
 }
 
 function CrearMapa() {
   //Crear Mapa
-  var map = L.map("map").setView([MiLat, MiLong], 13);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  var map = L.map('map').setView([MiLat, MiLong], 13);
+  L.tileLayer(`https://tile.openstreetmap.org/{z}/{x}/{y}.png`, {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
@@ -615,7 +615,7 @@ function CrearMapa() {
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   });
-  L.marker([MiLat, Milong], { icon: blackIcon }).addTo(map);
+  L.marker([MiLat, MiLong], { icon: blackIcon }).addTo(map);
 
   //Capturar click
   map.on("click", capturarClick);
