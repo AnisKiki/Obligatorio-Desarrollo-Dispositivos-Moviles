@@ -212,7 +212,8 @@ async function TomarDatosLogin() {
   if(respuesta.codigo == 200){
     nav.push("page-home");
     MostrarToast("Datos correcto, redirigiendo", 3000);
-    localStorage.setItem("token", respuesta.apyKey);
+    localStorage.setItem("token", respuesta.apiKey);
+    console.log(respuesta.apiKey)
     localStorage.setItem("id", respuesta.id);
     ArmarMenu();
   }else{
