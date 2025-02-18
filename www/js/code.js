@@ -595,7 +595,7 @@ function CrearMapa() {
   // DE ACA EN ADELANTE PODEMOS BORRAR
   //Obtener distancia entre dos puntos
   //Metodo 1
-  let desde = marcador1.getLatLng();
+  /* let desde = marcador1.getLatLng();
   let hasta = marcador2.getLatLng();
   let distancia = desde.distanceTo(hasta);
 
@@ -616,7 +616,7 @@ function CrearMapa() {
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   });
-  L.marker([MiLat, MiLong], { icon: blackIcon }).addTo(map);
+  L.marker([MiLat, MiLong], { icon: blackIcon }).addTo(map);  */
 
   //Capturar click
   map.on("click", capturarClick);
