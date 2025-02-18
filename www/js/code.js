@@ -339,6 +339,7 @@ function Navegar(evt) {
     MAPA.style.display = "block";
   } else if (ruta == "/estadisticas") {
     ESTADISTICAS.style.display = "block";
+    cargarTiempos();
   }
 }
 function OcultarPantalla() {
@@ -472,10 +473,10 @@ async function registrosFiltrados(c) {
   let fechaHaceUnMes = new Date();
   fechaHaceUnMes.setDate(fechaHaceUnMes.getDate() - 32);
   switch (c) {
-    case "3":
+    case "3": //todos los registros
       ret = registros;
       break;
-    case "1":
+    case "1": //ultima semana
       registros.forEach((r) => {
         if (Date.parse(r.fecha) >= fechaHaceUnaSemana) {
           ret.push(r);
@@ -483,14 +484,14 @@ async function registrosFiltrados(c) {
         }
       });
       break;
-    case "2":
+    case "2": //ultimo mes
       registros.forEach((r) => {
         if (Date.parse(r.fecha) >= fechaHaceUnMes) {
           ret.push(r);
         }
       });
       break;
-      case "4":
+      case "4": //hoy
       registros.forEach((r) => {
         if (Date.parse(r.fecha) == hoy) {
           ret.push(r);
@@ -526,7 +527,7 @@ async function obtenerRegistros() {
   return (await ret).registros;
 }
 
-async function obtenerTiempo(t){
+/* async function obtenerTiempo(t){
   let tiempo = 0;
   if(t == 1){ 
     let registros = await registrosFiltrados(4);
@@ -540,6 +541,37 @@ async function obtenerTiempo(t){
     }
   }
   return tiempo; 
+} */
+async function obtenerTiempo(t) {
+  let tiempo = 0;
+  let registros = await registrosFiltrados(t === 1 ? 4 : 3);
+  
+  for (let r of registros) {
+    tiempo += r.tiempo; 
+  }
+
+  return tiempo;
+}
+async function cargarTiempos() {
+  console.log("Ejecutando cargarTiempos()...");
+  let tiempoTotal = await obtenerTiempo(0);
+  let tiempoDiario = await obtenerTiempo(1); 
+
+  console.log("Tiempo Total:", tiempoTotal);
+  console.log("Tiempo Diario:", tiempoDiario);
+
+  let ret = `
+    <ion-item>
+      <ion-label>Tiempo Total:</ion-label>
+      <ion-label>${tiempoTotal} min</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tiempo Diario:</ion-label>
+      <ion-label>${tiempoDiario} min</ion-label>
+    </ion-item>
+  `;
+
+  dqs("#todasLasEstadisticas").innerHTML = ret;
 }
 
 
