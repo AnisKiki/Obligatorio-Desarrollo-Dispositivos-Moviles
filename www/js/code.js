@@ -577,12 +577,10 @@ async function obtenerTiempo(t) {
   return tiempo;
 }
 async function cargarTiempos() {
-  console.log("Ejecutando cargarTiempos()...");
+ 
+  PrenderLoading("Cargando estadisticas.")
   let tiempoTotal = await obtenerTiempo(0);
   let tiempoDiario = await obtenerTiempo(1);
-
-  console.log("Tiempo Total:", tiempoTotal);
-  console.log("Tiempo Diario:", tiempoDiario);
 
   let ret = `
     <ion-item>
@@ -596,6 +594,7 @@ async function cargarTiempos() {
   `;
 
   dqs("#todasLasEstadisticas").innerHTML = ret;
+  loading.dismiss();
 }
 
 /* AQUI COMIENZA TODO EL TEMA DEL MAPA */
