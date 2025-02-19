@@ -492,6 +492,7 @@ async function registrosFiltrados(c) {
   fechaHaceUnaSemana.setDate(fechaHaceUnaSemana.getDate() - 8);
   let fechaHaceUnMes = new Date();
   fechaHaceUnMes.setDate(fechaHaceUnMes.getDate() - 32);
+ 
   switch (c) {
     case "3": //todos los registros
       ret = registros;
@@ -511,9 +512,12 @@ async function registrosFiltrados(c) {
       });
       break;
     case "4": //hoy
+
       registros.forEach((r) => {
-        if (Date.parse(r.fecha) == hoy) {
+        
+        if (r.fecha == hoy.toString().split("T")[0]) {
           ret.push(r);
+
         }
       });
       break;
@@ -563,7 +567,8 @@ async function obtenerRegistros() {
 } */
 async function obtenerTiempo(t) {
   let tiempo = 0;
-  let registros = await registrosFiltrados(t === 1 ? 4 : 3);
+  console.log(t == 1 ? 4 : 3);
+  let registros = await registrosFiltrados(t == 1 ? "4" : "3");
 
   for (let r of registros) {
     tiempo += r.tiempo;
