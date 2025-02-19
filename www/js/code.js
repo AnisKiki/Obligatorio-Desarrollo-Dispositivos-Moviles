@@ -1,12 +1,12 @@
-const MENU = document.querySelector("#menu");
-const ROUTER = document.querySelector("#ruteo");
-const HOME = document.querySelector("#pantalla-home");
-const LOGIN = document.querySelector("#pantalla-login");
-const REGISTRO = document.querySelector("#pantalla-registro");
-const EJERCICIOS = document.querySelector("#pantalla-registrar-ejercicio");
-const MIS = document.querySelector("#pantalla-mis-registros");
-const MAPA = document.querySelector("#pantalla-mapa");
-const ESTADISTICAS = document.querySelector("#pantalla-estadisticas");
+const MENU = dqs("#menu");
+const ROUTER = dqs("#ruteo");
+const HOME = dqs("#pantalla-home");
+const LOGIN = dqs("#pantalla-login");
+const REGISTRO = dqs("#pantalla-registro");
+const EJERCICIOS = dqs("#pantalla-registrar-ejercicio");
+const MIS = dqs("#pantalla-mis-registros");
+const MAPA = dqs("#pantalla-mapa");
+const ESTADISTICAS = dqs("#pantalla-estadisticas");
 const URL_BASE = "https://movetrack.develotion.com/";
 const UIMG = "https://movetrack.develotion.com/imgs/";
 const nav = dqs("ion-nav");
@@ -23,7 +23,6 @@ let MiLong = null;
 function Inicio() {
   Eventos();
   ArmarMenu();
-
 }
 
 function ArmarMenu() {
@@ -44,7 +43,7 @@ function ArmarMenu() {
             <ion-item onclick="CerrarMenu()" href="/registro">Registro</ion-item>
         `;
   }
-  document.querySelector("#menu-opciones").innerHTML = cadena;
+  dqs("#menu-opciones").innerHTML = cadena;
 }
 
 const loading = document.createElement("ion-loading");
@@ -65,23 +64,21 @@ function MostrarToast(mensaje, duracion) {
 
 function Eventos() {
   ROUTER.addEventListener("ionRouteDidChange", Navegar);
-  document
-    .querySelector("#btnRegistro")
-    .addEventListener("click", TomarDatosRegistro);
-  document
-    .querySelector("#btnLogin")
-    .addEventListener("click", TomarDatosLogin);
-  document
-    .querySelector("#btnGuardarEjercicio")
-    .addEventListener("click", GuardarEjercicio);
 
-  document.querySelector("#menu").addEventListener("ionDidOpen", () => {
-    document.querySelector("#menu").removeAttribute("aria-hidden");
+  dqs("#btnRegistro").addEventListener("click", TomarDatosRegistro);
+  dqs("#btnLogin").addEventListener("click", TomarDatosLogin);
+  dqs("#btnGuardarEjercicio").addEventListener("click", GuardarEjercicio);
+
+  dqs("#menu").addEventListener("ionDidOpen", () => {
+    dqs("#menu").removeAttribute("aria-hidden");
   });
-  document.querySelector("#menu").addEventListener("ionDidClose", () => {
-    document.querySelector("#menu").setAttribute("aria-hidden", "true");
+  dqs("#menu").addEventListener("ionDidClose", () => {
+    dqs("#menu").setAttribute("aria-hidden", "true");
   });
 }
+
+
+/* TODO LO NECESARIO PARA LA PANTALLA DE REGISTRARSE */
 let paises = null;
 async function cargarSelectPaises() {
   PrenderLoading("Cargando Componentes");
@@ -95,10 +92,9 @@ async function cargarSelectPaises() {
   loading.dismiss();
 }
 async function TomarDatosRegistro() {
-  let nom = document.querySelector("#txtRegistroNombre").value;
-  let pai = document.querySelector("#selectPaises").value;
-  let pas = document.querySelector("#txtRegistroPassword").value;
-
+  let nom = dqs("#txtRegistroNombre").value;
+  let pai = dqs("#selectPaises").value;
+  let pas = dqs("#txtRegistroPassword").value;
   let mensajeError = "";
 
   if (!nom || !pas || !pai) {
@@ -106,7 +102,6 @@ async function TomarDatosRegistro() {
   } else if (pas.length < 6) {
     mensajeError = "La contraseña debe tener al menos 6 caracteres";
   }
-
   if (mensajeError) {
     MostrarToast(mensajeError, 3000);
     return;
@@ -142,57 +137,14 @@ async function registrarse(u) {
   res = await response.json();
   return res;
 }
-/* function TomarDatosLogin() {
-  let nom = document.querySelector("#txtLoginNombre").value;
-  let pas = document.querySelector("#txtLoginPassword").value;
 
-  let mensajeError = "";
-  if (!nom || !pas) {
-    mensajeError = "Todos los campos son obligatorios.";
-  }
-  if (mensajeError) {
-    MostrarToast(mensajeError, 3000);
-    return;
-  }
 
-  let usuarioEncontrado = {
-    usuario: nom,
-    password: pas,
-  };
-
-  fetch(`${URL_BASE}login.php`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(usuarioEncontrado),
-  })
-    .then(function (response) {
-      console.log(response);
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      if (data.codigo === 200 && data.apiKey) {
-        localStorage.setItem("token", data.apiKey);
-        localStorage.setItem("id", data.id);
-        MostrarToast("Inicio de sesión exitoso.", 3000);
-        nav.push("page-home");
-        ArmarMenu();
-      } else {
-        MostrarToast("Usuario o contraseña incorrectos.", 3000);
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-} */
-
+/* TODO LO NECESARIO PARA LA PANTALLA DE LOGIN */
 async function TomarDatosLogin() {
-  let nom = document.querySelector("#txtLoginNombre").value;
-  let pas = document.querySelector("#txtLoginPassword").value;
-
+  let nom = dqs("#txtLoginNombre").value;
+  let pas = dqs("#txtLoginPassword").value;
   let mensajeError = "";
+
   if (!nom || !pas) {
     mensajeError = "Todos los campos son obligatorios.";
   }
@@ -213,7 +165,6 @@ async function TomarDatosLogin() {
     nav.push("page-home");
     MostrarToast("Datos correcto, redirigiendo", 3000);
     localStorage.setItem("token", respuesta.apiKey);
-    console.log(respuesta.apiKey);
     localStorage.setItem("id", respuesta.id);
     ArmarMenu();
   } else {
@@ -229,16 +180,16 @@ async function comprobarUsuario(l) {
     },
     body: JSON.stringify(l),
   });
-
   res = await response.json();
   return res;
 }
 
-async function GuardarEjercicio() {
-  let act = document.querySelector("#selectActividades").value;
-  let tie = document.querySelector("#timeActividades").value;
-  let fec = document.querySelector("#fechaEjercicio").value;
 
+/* TODO LO NECESARIO PARA LA PANTALLA DE REGISTRAR EJERCICIOS*/
+async function GuardarEjercicio() {
+  let act = dqs("#selectActividades").value;
+  let tie = dqs("#timeActividades").value;
+  let fec = dqs("#fechaEjercicio").value;
   let mensajeError = "";
 
   if (!act || !tie || !fec) {
@@ -255,6 +206,7 @@ async function GuardarEjercicio() {
   ejercicio.idActividad = act;
   ejercicio.tiempo = tie;
   ejercicio.fecha = fec;
+
   let response = await registrarEjercicio(ejercicio);
   if (response.status == 200) {
     MostrarToast("Actividad registrada correctamente.", 3000);
@@ -274,7 +226,6 @@ async function registrarEjercicio(e) {
   });
   return res;
 }
-
 async function CargarSelectActividades() {
   PrenderLoading("Cargando Componentes");
   await cargarActividades();
@@ -285,7 +236,6 @@ async function CargarSelectActividades() {
   dqs("#selectActividades").innerHTML = res;
   loading.dismiss();
 }
-
 async function cargarActividades() {
   if (actividades == null) {
     let act = await fetch(`${URL_BASE}actividades.php`, {
@@ -305,6 +255,8 @@ async function cargarActividades() {
     }
   }
 }
+
+
 
 function CerrarSesion() {
   localStorage.removeItem("token");
