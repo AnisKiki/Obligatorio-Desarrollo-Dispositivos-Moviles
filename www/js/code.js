@@ -23,7 +23,7 @@ let MiLong = null;
 function Inicio() {
   Eventos();
   ArmarMenu();
-  getLocation();
+
 }
 
 function ArmarMenu() {
@@ -82,13 +82,13 @@ function Eventos() {
     document.querySelector("#menu").setAttribute("aria-hidden", "true");
   });
 }
+let paises = null;
 async function cargarSelectPaises() {
   PrenderLoading("Cargando Componentes");
-  let paises = await fetch(`${URL_BASE}paises.php`);
-  paises = await paises.json();
+  await cargarPaises();
 
   let res = "";
-  paises.paises.forEach((p) => {
+  paises.forEach((p) => {
     res += `<ion-select-option value="${p.id}">${p.name}</ion-select-option>`;
   });
   dqs("#selectPaises").innerHTML = res;
@@ -335,6 +335,7 @@ function Navegar(evt) {
     CargarSliderRegistros();
     MIS.style.display = "block";
   } else if (ruta == "/mapa") {
+    cargarMapa();
     MAPA.style.display = "block";
   } else if (ruta == "/estadisticas") {
     ESTADISTICAS.style.display = "block";
@@ -449,7 +450,7 @@ function cargarlistButtonsRegistros() {
     <ion-button onclick="filtroRegistro(2)" color="primary">Mes</ion-button>
     <ion-button onclick="filtroRegistro(1)" color="primary">Semana</ion-button>`;
   }
-  dqs("#listButtonsRegistros").innerHTML=ret;
+  dqs("#listButtonsRegistros").innerHTML = ret;
 }
 async function eliminarRegistro(idRegistro) {
   let ret = await dropRegistro(idRegistro);
@@ -492,7 +493,7 @@ async function registrosFiltrados(c) {
   fechaHaceUnaSemana.setDate(fechaHaceUnaSemana.getDate() - 8);
   let fechaHaceUnMes = new Date();
   fechaHaceUnMes.setDate(fechaHaceUnMes.getDate() - 32);
- 
+
   switch (c) {
     case "3": //todos los registros
       ret = registros;
@@ -512,12 +513,9 @@ async function registrosFiltrados(c) {
       });
       break;
     case "4": //hoy
-
       registros.forEach((r) => {
-        
         if (r.fecha == hoy.toString().split("T")[0]) {
           ret.push(r);
-
         }
       });
       break;
@@ -577,8 +575,7 @@ async function obtenerTiempo(t) {
   return tiempo;
 }
 async function cargarTiempos() {
- 
-  PrenderLoading("Cargando estadisticas.")
+  PrenderLoading("Cargando estadisticas.");
   let tiempoTotal = await obtenerTiempo(0);
   let tiempoDiario = await obtenerTiempo(1);
 
@@ -598,7 +595,8 @@ async function cargarTiempos() {
 }
 
 /* AQUI COMIENZA TODO EL TEMA DEL MAPA */
-function getLocation() {
+/* function getLocation() {
+  PrenderLoading("Cargando componentes.")
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(mostrarMiUbicacion);
   } else {
@@ -606,100 +604,100 @@ function getLocation() {
   }
 }
 function mostrarMiUbicacion(position) {
+  console.log(position);
   MiLat = position.coords.latitude;
   MiLong = position.coords.longitude;
-  CrearMapa();
+  CrearMapa(MiLat, MiLong);
+} */
+async function cargarMapa(){
+  PrenderLoading("Cargando componentes.")
+  setTimeout(function(){
+    CrearMapa()
+  },1000)
 }
 
-function CrearMapa() {
-  //Crear Mapa
-  var map = L.map("map").setView([MiLat, MiLong], 13);
-  L.tileLayer(`https://tile.openstreetmap.org/{z}/{x}/{y}.png`, {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  }).addTo(map);
+let lat = -19.9;
+let long= -58.1;
+var map = null;
 
-  //Agregar Marcadores
-  //Por el momento esto lo podemos borrar. Queda a revision.
-  let marcador1 = L.marker([-34.857929, -56.182966]).addTo(map);
-  marcador1.bindPopup("<strong>Punto 1</strong><br><span>Calle 1</span>");
-  let marcador2 = L.marker([-34.854433, -56.165653]).addTo(map);
-  marcador2.bindPopup("<strong>Punto 2</strong><br><span>Calle 2</span>");
-
-  //Cambiar color del marcador EJEMPLOS
-  var greenIcon = new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
-  let marcador3 = L.marker([-34.852485, -56.171371], { icon: greenIcon }).addTo(
-    map
-  );
-
-  //Crear un radio
-  var circulo = L.circle([-34.852485, -56.171371], {
-    color: "red",
-    fillColor: "#f03",
-    fillOpacity: 0.5,
-    radius: 500,
-  }).addTo(map);
-
-  // DE ACA EN ADELANTE PODEMOS BORRAR
-  //Obtener distancia entre dos puntos
-  //Metodo 1
-  /* let desde = marcador1.getLatLng();
-  let hasta = marcador2.getLatLng();
-  let distancia = desde.distanceTo(hasta);
-
-  console.log("Método 1: La distancia del punto 1 al 2 es " + distancia);
-  //Método 2
-
-  let distanciaKilometros = Number(map.distance(desde, hasta) / 1000).toFixed(2);
-  let distanciaMetros = Number(map.distance(desde, hasta)).toFixed(2);
-  console.log("Método 2: la distancia en metros es " + distanciaMetros);
-  console.log("Método 2: la distancia en kilómetros es " + distanciaKilometros);
-
-  //Poner un icono negro a mi ubicación.
-  var blackIcon = new L.Icon({
-    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png",
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
-  L.marker([MiLat, MiLong], { icon: blackIcon }).addTo(map);  */
-
-  //Capturar click
-  map.on("click", capturarClick);
-}
-
-function capturarClick(ev) {
-  alert(`Has hecho click en ${ev.latlng.lat} - ${ev.latlng.lng}`);
-}
-
-/* navigator.geolocation.getCurrentPosition(setearCoordenadas);
-function setearCoordenadas(position){
-  let latitud = position.coords.latitude;
-  let longitud = position.coords.longitude;
-  console.log(latitud);
-  console.log(longitud);
-}
-
-function CrearMapa() {
-  var map = L.map('map').setView([-34.89792, -56.1905664], 2);
-
-  L.tileyer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+async function CrearMapa() {
+  if (map != null){
+    map.remove();
+  }
+  map = L.map("map").setView([lat, long], 4);
+  await cargarPersonasPais();
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     minZoom: 1,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
+  loading.dismiss()
+  return map;
+}
+async function cargarPersonasPais(){
+  let personas = await obtenerPersonasPorPaisValido();
+  if (personas != null) {
+    personas.forEach(p => {
+      
+      let marcador = L.marker([p.latitude, p.longitude]);
+      marcador.bindPopup(`<strong>${p.name}</strong><br><span>Cantidad de usuarios: ${p.cantidadDeUsuarios}</span>`)
+      marcador.addTo(map)
+      
+    });
+  }else{
+    MostrarToast("No se pueden cargar las personas por Pais.", 3000)
+  }
+}
 
-  return map; 
-} */
+async function obtenerPersonasPorPais() {
+  let ret = null;
+
+  ret = await fetch(`${URL_BASE}/usuariosPorPais.php`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      iduser: localStorage.getItem("id"),
+      apikey: localStorage.getItem("token"),
+    },
+  });
+  if (ret.status == 200) {
+    ret = await ret.json();
+    ret = ret.paises;
+  }
+
+  return ret;
+}
+async function obtenerPersonasPorPaisValido() {
+  let personas = await obtenerPersonasPorPais();
+  await cargarPaises();
+  let ret =[];
+
+  if (personas != null) {
+    personas.forEach((p) => {
+      paises.forEach(pa => {
+        if(pa.id==p.id){
+          Object.defineProperty(p,'latitude',{value:pa.latitude});
+          Object.defineProperty(p,'longitude',{value:pa.longitude});
+          
+          ret.push(p);
+        }
+      });
+    });
+  }
+
+  return ret;
+}
+
+async function cargarPaises() {
+  if (paises == null) {
+    paises = await fetch(`${URL_BASE}paises.php`);
+    if (paises.status == 200){
+      paises = await paises.json();
+      paises= paises.paises
+    }else{
+      MostrarToast("No se pueden cargar los Paises.", 3000)
+    }
+  }
+
+}
