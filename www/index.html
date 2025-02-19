@@ -34,9 +34,7 @@
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" 
       crossorigin=""
     ></script> 
-    <style>
-      #map { height: 580px; }
-    </style>
+
   </head>
   <body>
     <ion-app>
@@ -248,10 +246,7 @@
           <ion-list>
             <ion-item-divider>
               <ion-list id="listButtonsRegistros" value="custom-checked">
-                <!-- <ion-radio id="s" onclick="filtroRegistro(1)" class="filtroMisActividades" value="semana" aria-label="Custom checkbox">Semana</ion-radio>
-                <ion-radio id="m"  onclick="filtroRegistro(2)" class="filtroMisActividades" value="mes" aria-label="Custom checkbox that is checked">Mes</ion-radio>
-                <ion-radio id="c"  onclick="filtroRegistro(3)" class="filtroMisActividades" value="completo" aria-label="Custom checkbox">Completo</ion-radio> -->
-              </ion-radio-group>
+              
             </ion-list>
           </ion-list>
           <ion-list id="sliderRegistros">
@@ -269,7 +264,7 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-list >
+          <ion-list class="map">
             <div  id="map"></div>
           </ion-list>
         </ion-content>
