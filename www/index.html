@@ -42,16 +42,10 @@
         <ion-route url="/" component="page-home"> </ion-route>
         <ion-route url="/login" component="page-login"> </ion-route>
         <ion-route url="/registro" component="page-registro"> </ion-route>
-        <ion-route
-          url="/registrar-ejercicio"
-          component="page-registrar-ejercicio"
-        >
-        </ion-route>
-        <ion-route url="/mis-registros" component="page-mis-registros">
-        </ion-route>
+        <ion-route url="/registrar-ejercicio" component="page-registrar-ejercicio"> </ion-route>
+        <ion-route url="/mis-registros" component="page-mis-registros"> </ion-route>
         <ion-route url="/mapa" component="page-mapa"> </ion-route>
-        <ion-route url="/estadisticas" component="page-estadisticas">
-        </ion-route>
+        <ion-route url="/estadisticas" component="page-estadisticas"> </ion-route>
       </ion-router>
       <ion-nav></ion-nav>
 
@@ -175,10 +169,7 @@
         </ion-content>
       </page-registro>
 
-      <page-registrar-ejercicio
-        class="ion-page"
-        id="pantalla-registrar-ejercicio"
-      >
+      <page-registrar-ejercicio class="ion-page" id="pantalla-registrar-ejercicio">
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
@@ -216,9 +207,8 @@
             </ion-item>
             <ion-item id="fechaActiv"> </ion-item>
           </ion-list>
-          <ion-button expand="full" id="btnGuardarEjercicio"
-            >Guardar Ejercicio</ion-button
-          >
+          
+          <ion-button expand="full" id="btnGuardarEjercicio">Guardar Ejercicio</ion-button>
           <ion-label id="label-respuesta-ejercicio"></ion-label>
         </ion-content>
       </page-registrar-ejercicio>

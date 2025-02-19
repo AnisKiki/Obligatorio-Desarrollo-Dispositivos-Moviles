@@ -1,4 +1,4 @@
-ion-range::part(pin) {
+ion-range::part(pin){
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -15,36 +15,38 @@ ion-range::part(pin) {
     transition: transform 120ms ease, background 120ms ease;
 }
 
-ion-radio {
+ion-radio{
     --border-radius: 4px;
     --inner-border-radius: 4px;
-
     --color: #ddd;
     --color-checked: #a50000;
 }
-
-ion-radio.ios::part(container) {
+ion-radio.ios::part(container){
     width: 20px;
     height: 20px;
-
     border: 2px solid #bd98c6;
     border-radius: 4px;
 }
-
-.radio-checked.ios::part(container) {
+.radio-checked.ios::part(container){
     border-color: #a50000;
 }
+
 .imgRegistros{
     height: 76%;
     width: 76%;
 }
-.map {position: absolute;
+
+.map{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+#map{
+    position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;  
-height: 100%;}
-#map {position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;  
-height: 100%;}
+    height: 100%;
+}
