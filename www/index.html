@@ -23,50 +23,34 @@
     />
 
     <!-- MAPA -->
-    <link 
-      rel="stylesheet" 
-      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" 
-      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" 
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
       crossorigin=""
     />
-    <script 
-      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" 
-      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" 
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
       crossorigin=""
-    ></script> 
-
+    ></script>
   </head>
   <body>
     <ion-app>
       <!-- Componente de ruteo -->
       <ion-router id="ruteo">
-        <ion-route 
-          url="/" 
-          component="page-home">
+        <ion-route url="/" component="page-home"> </ion-route>
+        <ion-route url="/login" component="page-login"> </ion-route>
+        <ion-route url="/registro" component="page-registro"> </ion-route>
+        <ion-route
+          url="/registrar-ejercicio"
+          component="page-registrar-ejercicio"
+        >
         </ion-route>
-        <ion-route 
-          url="/login" 
-          component="page-login">
+        <ion-route url="/mis-registros" component="page-mis-registros">
         </ion-route>
-        <ion-route 
-          url="/registro" 
-          component="page-registro">
-        </ion-route>
-        <ion-route 
-          url="/registrar-ejercicio" 
-          component="page-registrar-ejercicio">
-        </ion-route>
-        <ion-route 
-          url="/mis-registros" 
-          component="page-mis-registros">
-        </ion-route>
-        <ion-route 
-          url="/mapa" 
-          component="page-mapa">
-        </ion-route>
-        <ion-route 
-          url="/estadisticas" 
-          component="page-estadisticas">
+        <ion-route url="/mapa" component="page-mapa"> </ion-route>
+        <ion-route url="/estadisticas" component="page-estadisticas">
         </ion-route>
       </ion-router>
       <ion-nav></ion-nav>
@@ -99,7 +83,8 @@
           <ion-text color="tertiary">
             <h3>
               Taller de dispositivos moviles<br /><ion-text color="danger"
-                >Nicolas Ceglan - Nadyr Miguel</ion-text>
+                >Nicolas Ceglan - Nadyr Miguel</ion-text
+              >
             </h3>
           </ion-text>
         </ion-content>
@@ -109,7 +94,9 @@
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-menu-button>  <ion-icon name="menu-outline"></ion-icon> </ion-menu-button>
+              <ion-menu-button>
+                <ion-icon name="menu-outline"></ion-icon>
+              </ion-menu-button>
             </ion-buttons>
             <ion-title>Login</ion-title>
           </ion-toolbar>
@@ -144,7 +131,9 @@
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-menu-button> <ion-icon name="menu-outline"></ion-icon> </ion-menu-button>
+              <ion-menu-button>
+                <ion-icon name="menu-outline"></ion-icon>
+              </ion-menu-button>
             </ion-buttons>
             <ion-title>Registro</ion-title>
           </ion-toolbar>
@@ -193,7 +182,9 @@
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-menu-button> <ion-icon name="menu-outline"></ion-icon> </ion-menu-button>
+              <ion-menu-button>
+                <ion-icon name="menu-outline"></ion-icon>
+              </ion-menu-button>
             </ion-buttons>
             <ion-title>Registrar Ejercicio</ion-title>
           </ion-toolbar>
@@ -205,16 +196,16 @@
                 <ion-select
                   id="selectActividades"
                   interface="popover"
-                  placeholder="Seleccione Actividad">
+                  placeholder="Seleccione Actividad"
+                >
                   <div slot="label">Actividad</div>
                 </ion-select>
               </ion-item>
             </ion-list>
             <ion-item>
-
               <ion-range
-              label="Tiempo (min)"
-              label-placement="stacked"
+                label="Tiempo (min)"
+                label-placement="stacked"
                 id="timeActividades"
                 aria-label="Custom range"
                 min="0"
@@ -223,8 +214,7 @@
                 ticks="true"
               ></ion-range>
             </ion-item>
-            <ion-item id="fechaActiv">
-            </ion-item>
+            <ion-item id="fechaActiv"> </ion-item>
           </ion-list>
           <ion-button expand="full" id="btnGuardarEjercicio"
             >Guardar Ejercicio</ion-button
@@ -237,7 +227,9 @@
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-menu-button><ion-icon name="menu-outline"></ion-icon> </ion-menu-button>
+              <ion-menu-button
+                ><ion-icon name="menu-outline"></ion-icon>
+              </ion-menu-button>
             </ion-buttons>
             <ion-title>Mis Registros</ion-title>
           </ion-toolbar>
@@ -245,12 +237,10 @@
         <ion-content>
           <ion-list>
             <ion-item-divider>
-              <ion-list id="listButtonsRegistros" value="custom-checked">
-              
-            </ion-list>
+              <ion-list id="listButtonsRegistros"> </ion-list>
+            </ion-item-divider>
           </ion-list>
-          <ion-list id="sliderRegistros">
-          </ion-list>
+          <ion-list id="sliderRegistros"> </ion-list>
         </ion-content>
       </page-mis-registros>
 
@@ -258,14 +248,16 @@
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-menu-button>  <ion-icon name="menu-outline"></ion-icon> </ion-menu-button>
+              <ion-menu-button>
+                <ion-icon name="menu-outline"></ion-icon>
+              </ion-menu-button>
             </ion-buttons>
             <ion-title>Mapa de Usuarios</ion-title>
           </ion-toolbar>
         </ion-header>
         <ion-content>
           <ion-list class="map">
-            <div  id="map"></div>
+            <div id="map"></div>
           </ion-list>
         </ion-content>
       </page-mapa>
@@ -282,9 +274,7 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-list id="todasLasEstadisticas">
-
-          </ion-list>
+          <ion-list id="todasLasEstadisticas"> </ion-list>
         </ion-content>
       </page-estadisticas>
     </ion-app>
