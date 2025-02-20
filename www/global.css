@@ -15,22 +15,6 @@ ion-range::part(pin){
     transition: transform 120ms ease, background 120ms ease;
 }
 
-ion-radio{
-    --border-radius: 4px;
-    --inner-border-radius: 4px;
-    --color: #ddd;
-    --color-checked: #a50000;
-}
-ion-radio.ios::part(container){
-    width: 20px;
-    height: 20px;
-    border: 2px solid #bd98c6;
-    border-radius: 4px;
-}
-.radio-checked.ios::part(container){
-    border-color: #a50000;
-}
-
 .imgRegistros{
     height: 76%;
     width: 76%;
