@@ -354,6 +354,19 @@ async function CargarSliderRegistros() {
   let ret = "";
   for (let r of registros) {
     const actividad = await actividadById(r.idActividad);
+    /* 
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img 
+            src="${UIMG + actividad.imagen + ".png"}" 
+            alt="${actividad.nombre}"
+          >
+        </ion-thumbnail>
+        <ion-label>
+          <p>${actividad.nombre} / ${r.tiempo}(min) / ${r.fecha}</p>
+        </ion-label>
+      </ion-item>
+    */
     ret += `
       <ion-item-sliding>
         <ion-item>
