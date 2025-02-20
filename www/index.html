@@ -37,7 +37,7 @@
   </head>
   <body>
     <ion-app>
-      <!-- Componente de ruteo -->
+      <!-- COMPONENTE DE RUTEO -->
       <ion-router id="ruteo">
         <ion-route url="/" component="page-home"> </ion-route>
         <ion-route url="/login" component="page-login"> </ion-route>
@@ -48,6 +48,7 @@
         <ion-route url="/estadisticas" component="page-estadisticas"> </ion-route>
       </ion-router>
       <ion-nav></ion-nav>
+
 
       <!-- MENU -->
       <ion-menu side="start" menu-id="first" content-id="main" id="menu">
@@ -62,6 +63,8 @@
       </ion-menu>
       <div id="main"></div>
 
+
+      <!-- PANTALLA HOME -->
       <page-home class="ion-page" id="pantalla-home">
         <ion-header>
           <ion-toolbar>
@@ -84,6 +87,8 @@
         </ion-content>
       </page-home>
 
+
+      <!-- PANTALLA LOGIN -->
       <page-login class="ion-page" id="pantalla-login">
         <ion-header>
           <ion-toolbar>
@@ -121,6 +126,8 @@
         </ion-content>
       </page-login>
 
+
+      <!-- PANTALLA REGISTRO -->
       <page-registro class="ion-page" id="pantalla-registro">
         <ion-header>
           <ion-toolbar>
@@ -169,6 +176,8 @@
         </ion-content>
       </page-registro>
 
+
+      <!-- PANTALLA REGISTRAR EJERCICIOS -->
       <page-registrar-ejercicio class="ion-page" id="pantalla-registrar-ejercicio">
         <ion-header>
           <ion-toolbar>
@@ -207,12 +216,14 @@
             </ion-item>
             <ion-item id="fechaActiv"> </ion-item>
           </ion-list>
-          
+
           <ion-button expand="full" id="btnGuardarEjercicio">Guardar Ejercicio</ion-button>
           <ion-label id="label-respuesta-ejercicio"></ion-label>
         </ion-content>
       </page-registrar-ejercicio>
 
+
+      <!-- PANTALLA MIS REGISTROS -->
       <page-mis-registros class="ion-page" id="pantalla-mis-registros">
         <ion-header>
           <ion-toolbar>
@@ -234,6 +245,8 @@
         </ion-content>
       </page-mis-registros>
 
+
+      <!-- PANTALLA MAPA -->
       <page-mapa class="ion-page" id="pantalla-mapa">
         <ion-header>
           <ion-toolbar>
@@ -252,6 +265,8 @@
         </ion-content>
       </page-mapa>
 
+
+      <!-- PANTALLA ESTADISTICAS -->
       <page-estadisticas class="ion-page" id="pantalla-estadisticas">
         <ion-header>
           <ion-toolbar>

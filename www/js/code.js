@@ -1,22 +1,24 @@
-const MENU = dqs("#menu");
-const ROUTER = dqs("#ruteo");
-const HOME = dqs("#pantalla-home");
-const LOGIN = dqs("#pantalla-login");
-const REGISTRO = dqs("#pantalla-registro");
 const EJERCICIOS = dqs("#pantalla-registrar-ejercicio");
-const MIS = dqs("#pantalla-mis-registros");
-const MAPA = dqs("#pantalla-mapa");
-const ESTADISTICAS = dqs("#pantalla-estadisticas");
 const URL_BASE = "https://movetrack.develotion.com/";
+const ESTADISTICAS = dqs("#pantalla-estadisticas");
 const UIMG = "https://movetrack.develotion.com/imgs/";
+const REGISTRO = dqs("#pantalla-registro");
+const MIS = dqs("#pantalla-mis-registros");
+const HOME = dqs("#pantalla-home");
+const MAPA = dqs("#pantalla-mapa");
+const LOGIN = dqs("#pantalla-login");
+const ROUTER = dqs("#ruteo");
+const MENU = dqs("#menu");
 const nav = dqs("ion-nav");
 let actividades = null;
 let modal = null;
-
 Inicio();
+
+
 function dqs(id) {
   return document.querySelector(`${id}`);
 }
+
 
 let MiLat = null;
 let MiLong = null;
@@ -25,42 +27,69 @@ function Inicio() {
   ArmarMenu();
 }
 
+
 function ArmarMenu() {
   let hayToken = localStorage.getItem("token");
 
   let cadena = `<ion-item onclick="CerrarMenu()" href="/">Home</ion-item>`;
   if (hayToken) {
     cadena += `
-            <ion-item onclick="CerrarMenu()" href="/estadisticas">Estadisticas</ion-item>
-            <ion-item onclick="CerrarMenu()" href="/registrar-ejercicio">Registrar Ejercicio</ion-item>
-            <ion-item onclick="CerrarMenu()" href="/mis-registros">Mis Registros</ion-item>
-            <ion-item onclick="CerrarMenu()" href="/mapa">Mapa de Usuarios</ion-item>
-            <ion-item onclick="CerrarSesion()">Cerrar Sesión</ion-item>
-        `;
+      <ion-item onclick="CerrarMenu()" href="/estadisticas">Estadisticas</ion-item>
+      <ion-item onclick="CerrarMenu()" href="/registrar-ejercicio">Registrar Ejercicio</ion-item>
+      <ion-item onclick="CerrarMenu()" href="/mis-registros">Mis Registros</ion-item>
+      <ion-item onclick="CerrarMenu()" href="/mapa">Mapa de Usuarios</ion-item>
+      <ion-item onclick="CerrarSesion()">Cerrar Sesión</ion-item>
+    `;
   } else {
     cadena += `
-            <ion-item onclick="CerrarMenu()" href="/login">Login</ion-item>
-            <ion-item onclick="CerrarMenu()" href="/registro">Registro</ion-item>
-        `;
+      <ion-item onclick="CerrarMenu()" href="/login">Login</ion-item>
+      <ion-item onclick="CerrarMenu()" href="/registro">Registro</ion-item>
+    `;
   }
   dqs("#menu-opciones").innerHTML = cadena;
 }
-
-const loading = document.createElement("ion-loading");
-function PrenderLoading(texto) {
-  loading.cssClass = "my-custom-class";
-  loading.message = texto;
-  document.body.appendChild(loading);
-  loading.present();
+function CerrarMenu() {
+  MENU.close();
 }
 
-function MostrarToast(mensaje, duracion) {
-  const toast = document.createElement("ion-toast");
-  toast.message = mensaje;
-  toast.duration = duracion;
-  document.body.appendChild(toast);
-  toast.present();
+
+function Navegar(evt) {
+  OcultarPantalla();
+  const ruta = evt.detail.to;
+  let hayToken = localStorage.getItem("token");
+
+  if (ruta == "/") {
+    HOME.style.display = "block";
+  } else if (ruta == "/login") {
+    LOGIN.style.display = "block";
+  } else if (ruta == "/registro") {
+    cargarSelectPaises();
+    REGISTRO.style.display = "block";
+  } else if (ruta == "/registrar-ejercicio") {
+    CargarSelectActividades();
+    cargarCalendario();
+    EJERCICIOS.style.display = "block";
+  } else if (ruta == "/mis-registros") {
+    CargarSliderRegistros();
+    MIS.style.display = "block";
+  } else if (ruta == "/mapa") {
+    cargarMapa();
+    MAPA.style.display = "block";
+  } else if (ruta == "/estadisticas") {
+    ESTADISTICAS.style.display = "block";
+    cargarTiempos();
+  }
 }
+function OcultarPantalla() {
+  HOME.style.display = "none";
+  LOGIN.style.display = "none";
+  REGISTRO.style.display = "none";
+  EJERCICIOS.style.display = "none";
+  MIS.style.display = "none";
+  MAPA.style.display = "none";
+  ESTADISTICAS.style.display = "none";
+}
+
 
 function Eventos() {
   ROUTER.addEventListener("ionRouteDidChange", Navegar);
@@ -76,6 +105,23 @@ function Eventos() {
     dqs("#menu").setAttribute("aria-hidden", "true");
   });
 }
+
+
+const loading = document.createElement("ion-loading");
+function PrenderLoading(texto) {
+  loading.cssClass = "my-custom-class";
+  loading.message = texto;
+  document.body.appendChild(loading);
+  loading.present();
+}
+function MostrarToast(mensaje, duracion) {
+  const toast = document.createElement("ion-toast");
+  toast.message = mensaje;
+  toast.duration = duracion;
+  document.body.appendChild(toast);
+  toast.present();
+}
+
 
 
 /* TODO LO NECESARIO PARA LA PANTALLA DE REGISTRARSE */
@@ -139,6 +185,7 @@ async function registrarse(u) {
 }
 
 
+
 /* TODO LO NECESARIO PARA LA PANTALLA DE LOGIN */
 async function TomarDatosLogin() {
   let nom = dqs("#txtLoginNombre").value;
@@ -183,6 +230,7 @@ async function comprobarUsuario(l) {
   res = await response.json();
   return res;
 }
+
 
 
 /* TODO LO NECESARIO PARA LA PANTALLA DE REGISTRAR EJERCICIOS*/
@@ -255,72 +303,17 @@ async function cargarActividades() {
     }
   }
 }
-
-
-
-function CerrarSesion() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("usuarioId");
-  nav.push("page-home");
-  MostrarToast("Sesión cerrada correctamente.", 3000);
-  ArmarMenu();
-}
-
-function Navegar(evt) {
-  OcultarPantalla();
-  console.log(evt);
-  const ruta = evt.detail.to;
-  let hayToken = localStorage.getItem("token");
-
-  if (ruta == "/") {
-    HOME.style.display = "block";
-  } else if (ruta == "/login") {
-    LOGIN.style.display = "block";
-  } else if (ruta == "/registro") {
-    cargarSelectPaises();
-    REGISTRO.style.display = "block";
-  } else if (ruta == "/registrar-ejercicio") {
-    CargarSelectActividades();
-    cargarCalendario();
-    EJERCICIOS.style.display = "block";
-  } else if (ruta == "/mis-registros") {
-    CargarSliderRegistros();
-    MIS.style.display = "block";
-  } else if (ruta == "/mapa") {
-    cargarMapa();
-    MAPA.style.display = "block";
-  } else if (ruta == "/estadisticas") {
-    ESTADISTICAS.style.display = "block";
-    cargarTiempos();
-  }
-}
-function OcultarPantalla() {
-  HOME.style.display = "none";
-  LOGIN.style.display = "none";
-  REGISTRO.style.display = "none";
-  EJERCICIOS.style.display = "none";
-  MIS.style.display = "none";
-  MAPA.style.display = "none";
-  ESTADISTICAS.style.display = "none";
-}
-
-function CerrarMenu() {
-  MENU.close();
-}
-
-/* Calendario Actividades */
+// Inicio Calendario Actividades //
 function confirm() {
   const input = document.querySelector("ion-input");
   modal = document.querySelector("ion-modal");
   modal.dismiss(input.value, "confirm");
 }
-
 // Formateo de fecha a formato ISO 8601 ayuda por parte de ChatGPT
 let fecha = new Date();
 let anio = fecha.getFullYear();
 let mes = String(fecha.getMonth() + 1).padStart(2, "0");
 let dia = String(fecha.getDate()).padStart(2, "0");
-
 let hoy = `${anio}-${mes}-${dia}T14:48:00.000Z`;
 function cargarCalendario() {
   dqs("#fechaActiv").innerHTML = `
@@ -338,14 +331,17 @@ function cargarCalendario() {
     <ion-datetime presentation="date" id="fechaEjercicio" value="${hoy}" max="${hoy}"></ion-datetime>
   </ion-modal>`;
 }
-/* Fin calendario Actividades */
+// Fin Calendario Actividades //
 
-/* Error
-https://github.com/ionic-team/ionic-framework/issues/29499 */
+
+
+/* TODO LO NECESARIO PARA LA PANTALLA DE MIS REGISTROS */
+// Error
+// https://github.com/ionic-team/ionic-framework/issues/29499 
 async function CargarSliderRegistros() {
   PrenderLoading("Cargando componentes.");
   /* Soy dios */
-  let sliderRegistros = document.querySelector("#sliderRegistros");
+  let sliderRegistros = dqs("#sliderRegistros");
 
   if (sliderRegistros.children.length > 0) {
     location.reload();
@@ -354,53 +350,59 @@ async function CargarSliderRegistros() {
   let registros = await registrosFiltrados(
     localStorage.getItem("filtroRegistros")
   );
-  let ret = "";
 
+  let ret = "";
   for (let r of registros) {
     const actividad = await actividadById(r.idActividad);
-
     ret += `
       <ion-item-sliding>
         <ion-item>
-        <ion-item slot="start">
-          <ion-img class="imgRegistros"
-          src="${UIMG + actividad.imagen + ".png"}"
-          alt="${actividad.nombre}">
-        </ion-item>
-          <ion-label class="labelRegistros">
-          ${actividad.nombre}, ${r.tiempo}(min), ${r.fecha}</ion-label>
+          <ion-item slot="start" style="margin-right: 10px;">
+            <ion-img class="imgRegistros"
+              src="${UIMG + actividad.imagen + ".png"}"
+              alt="${actividad.nombre}"
+              style="width: 50px; height: 50px;"
+            >
+          </ion-item>
+          <ion-label class="labelRegistros" style="margin-left: 10px;">
+            ${actividad.nombre} / ${r.tiempo}(min) / ${r.fecha}
+          </ion-label>
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option id="${
-            r.id
-          }" color="danger" onclick="eliminarRegistro('${
-      r.id
-    }')">Eliminar</ion-item-option>
+          <ion-item-option 
+            id="${r.id}" 
+            color="danger" 
+            onclick="eliminarRegistro('${r.id}')"
+          > 
+          Eliminar
+          </ion-item-option>
         </ion-item-options>
-      </ion-item-sliding>`;
+      </ion-item-sliding>
+    `;
   }
-
   dqs("#sliderRegistros").innerHTML = ret;
   loading.dismiss();
 }
 function cargarlistButtonsRegistros() {
   let ret = "";
   if (localStorage.getItem("filtroRegistros") == 1) {
-    /* <ion-radio id="s" onclick="filtroRegistro(1)" class="filtroMisActividades" value="semana" aria-label="Custom checkbox">Semana</ion-radio>
-                <ion-radio id="m"  onclick="filtroRegistro(2)" class="filtroMisActividades" value="mes" aria-label="Custom checkbox that is checked">Mes</ion-radio>
-                <ion-radio id="c"  onclick="filtroRegistro(3)" class="filtroMisActividades" value="completo" aria-label="Custom checkbox">Completo</ion-radio> */
-
-    ret = `<ion-button onclick="filtroRegistro(3)" color="primary">Completo</ion-button>
-                <ion-button onclick="filtroRegistro(2)" color="primary">Mes</ion-button>
-                <ion-button onclick="filtroRegistro(1)" color="success">Semana</ion-button>`;
+    ret = `
+      <ion-button onclick="filtroRegistro(3)" color="primary">Completo</ion-button>
+      <ion-button onclick="filtroRegistro(2)" color="primary">Mes</ion-button>
+      <ion-button onclick="filtroRegistro(1)" color="success">Semana</ion-button>
+    `;
   } else if (localStorage.getItem("filtroRegistros") == 2) {
-    ret = `<ion-button onclick="filtroRegistro(3)" color="primary">Completo</ion-button>
-    <ion-button onclick="filtroRegistro(2)" color="success">Mes</ion-button>
-    <ion-button onclick="filtroRegistro(1)" color="primary">Semana</ion-button>`;
+    ret = `
+      <ion-button onclick="filtroRegistro(3)" color="primary">Completo</ion-button>
+      <ion-button onclick="filtroRegistro(2)" color="success">Mes</ion-button>
+      <ion-button onclick="filtroRegistro(1)" color="primary">Semana</ion-button>
+    `;
   } else {
-    ret = `<ion-button onclick="filtroRegistro(3)" color="success">Completo</ion-button>
-    <ion-button onclick="filtroRegistro(2)" color="primary">Mes</ion-button>
-    <ion-button onclick="filtroRegistro(1)" color="primary">Semana</ion-button>`;
+    ret = `
+      <ion-button onclick="filtroRegistro(3)" color="success">Completo</ion-button>
+      <ion-button onclick="filtroRegistro(2)" color="primary">Mes</ion-button>
+      <ion-button onclick="filtroRegistro(1)" color="primary">Semana</ion-button>
+    `;
   }
   dqs("#listButtonsRegistros").innerHTML = ret;
 }
@@ -447,24 +449,24 @@ async function registrosFiltrados(c) {
   fechaHaceUnMes.setDate(fechaHaceUnMes.getDate() - 32);
 
   switch (c) {
-    case "3": //todos los registros
+    case "3": // todos los registros
       ret = registros;
       break;
-    case "1": //ultima semana
+    case "1": // ultima semana
       registros.forEach((r) => {
         if (Date.parse(r.fecha) >= fechaHaceUnaSemana) {
           ret.push(r);
         }
       });
       break;
-    case "2": //ultimo mes
+    case "2": // ultimo mes
       registros.forEach((r) => {
         if (Date.parse(r.fecha) >= fechaHaceUnMes) {
           ret.push(r);
         }
       });
       break;
-    case "4": //hoy
+    case "4": // hoy
       registros.forEach((r) => {
         if (r.fecha == hoy.toString().split("T")[0]) {
           ret.push(r);
@@ -477,7 +479,6 @@ async function registrosFiltrados(c) {
   }
   return ret;
 }
-
 async function obtenerRegistros() {
   let ret = fetch(
     `${URL_BASE}/registros.php?idUsuario=${localStorage.getItem("id")}`,
@@ -496,25 +497,12 @@ async function obtenerRegistros() {
   } else {
     MostrarToast("No se pudieron obtener los registros.", 3000);
   }
-
   return (await ret).registros;
 }
 
-/* async function obtenerTiempo(t){
-  let tiempo = 0;
-  if(t == 1){ 
-    let registros = await registrosFiltrados(4);
-    for (let r of registros) {
-      tiempo += (await r).tiempo;
-    }
-  }else{
-    let registros = await registrosFiltrados(3);
-    for (let r of registros) {
-      tiempo += (await r).tiempo;
-    }
-  }
-  return tiempo; 
-} */
+
+
+/* TODO LO NECESARIO PARA LA PANTALLA DE MIS ESTADISTICAS */
 async function obtenerTiempo(t) {
   let tiempo = 0;
   console.log(t == 1 ? 4 : 3);
@@ -523,7 +511,6 @@ async function obtenerTiempo(t) {
   for (let r of registros) {
     tiempo += r.tiempo;
   }
-
   return tiempo;
 }
 async function cargarTiempos() {
@@ -541,37 +528,22 @@ async function cargarTiempos() {
       <ion-label>${tiempoDiario} min</ion-label>
     </ion-item>
   `;
-
   dqs("#todasLasEstadisticas").innerHTML = ret;
   loading.dismiss();
 }
 
-/* AQUI COMIENZA TODO EL TEMA DEL MAPA */
-/* function getLocation() {
-  PrenderLoading("Cargando componentes.")
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(mostrarMiUbicacion);
-  } else {
-    console.log("No soportado");
-  }
-}
-function mostrarMiUbicacion(position) {
-  console.log(position);
-  MiLat = position.coords.latitude;
-  MiLong = position.coords.longitude;
-  CrearMapa(MiLat, MiLong);
-} */
+
+
+/* TODO LO NECESARIO PARA LA PANTALLA DE MAPA */
 async function cargarMapa(){
   PrenderLoading("Cargando componentes.")
   setTimeout(function(){
     CrearMapa()
-  },1000)
+  },1000);
 }
-
 let lat = -19.9;
 let long= -58.1;
 var map = null;
-
 async function CrearMapa() {
   if (map != null){
     map.remove();
@@ -581,8 +553,7 @@ async function CrearMapa() {
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     minZoom: 1,
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
   loading.dismiss()
   return map;
@@ -591,17 +562,22 @@ async function cargarPersonasPais(){
   let personas = await obtenerPersonasPorPaisValido();
   if (personas != null) {
     personas.forEach(p => {
-      
       let marcador = L.marker([p.latitude, p.longitude]);
-      marcador.bindPopup(`<strong>${p.name}</strong><br><span>Cantidad de usuarios: ${p.cantidadDeUsuarios}</span>`)
+      marcador.bindPopup(`
+        <strong>
+          ${p.name}
+        </strong>
+        <br>
+        <span>
+          Cantidad de usuarios: ${p.cantidadDeUsuarios}
+        </span>
+      `)
       marcador.addTo(map)
-      
     });
   }else{
     MostrarToast("No se pueden cargar las personas por Pais.", 3000)
   }
 }
-
 async function obtenerPersonasPorPais() {
   let ret = null;
 
@@ -617,7 +593,6 @@ async function obtenerPersonasPorPais() {
     ret = await ret.json();
     ret = ret.paises;
   }
-
   return ret;
 }
 async function obtenerPersonasPorPaisValido() {
@@ -628,19 +603,16 @@ async function obtenerPersonasPorPaisValido() {
   if (personas != null) {
     personas.forEach((p) => {
       paises.forEach(pa => {
-        if(pa.id==p.id){
+        if(pa.id == p.id){
           Object.defineProperty(p,'latitude',{value:pa.latitude});
           Object.defineProperty(p,'longitude',{value:pa.longitude});
-          
           ret.push(p);
         }
       });
     });
   }
-
   return ret;
 }
-
 async function cargarPaises() {
   if (paises == null) {
     paises = await fetch(`${URL_BASE}paises.php`);
@@ -651,5 +623,15 @@ async function cargarPaises() {
       MostrarToast("No se pueden cargar los Paises.", 3000)
     }
   }
+}
 
+
+
+/* LO NECESARIO PARA CERRAR SESION */
+function CerrarSesion() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("usuarioId");
+  nav.push("page-home");
+  MostrarToast("Sesión cerrada correctamente.", 3000);
+  ArmarMenu();
 }
