@@ -336,50 +336,57 @@ async function CargarSliderRegistros() {
   let registros = await registrosFiltrados(
     localStorage.getItem("filtroRegistros")
   );
-
+  let error = false;
   let ret = "";
   for (let r of registros) {
-    const actividad = await actividadById(r.idActividad);
-    /* 
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <img 
-            src="${UIMG + actividad.imagen + ".png"}" 
-            alt="${actividad.nombre}"
-          >
-        </ion-thumbnail>
-        <ion-label>
-          <p>${actividad.nombre} / ${r.tiempo}(min) / ${r.fecha}</p>
-        </ion-label>
-      </ion-item>
-    */
-    ret += `
-      <ion-item-sliding>
+    if(r.idActividad != 0 || idActividad == null || idActividad == undefined){
+      const actividad = await actividadById(r.idActividad);
+      /* 
         <ion-item>
-          <ion-item slot="start" style="margin-right: 10px;">
-            <ion-img class="imgRegistros"
-              src="${UIMG + actividad.imagen + ".png"}"
+          <ion-thumbnail slot="start">
+            <img 
+              src="${UIMG + actividad.imagen + ".png"}" 
               alt="${actividad.nombre}"
-              style="width: 50px; height: 50px;"
             >
-          </ion-item>
-          <ion-label class="labelRegistros" style="margin-left: 10px;">
-            ${actividad.nombre} / ${r.tiempo}(min) / ${r.fecha}
+          </ion-thumbnail>
+          <ion-label>
+            <p>${actividad.nombre} / ${r.tiempo}(min) / ${r.fecha}</p>
           </ion-label>
         </ion-item>
-        <ion-item-options side="end">
-          <ion-item-option 
-            id="${r.id}" 
-            color="danger" 
-            onclick="eliminarRegistro('${r.id}')"
-          > 
-          Eliminar
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    `;
+      */
+      ret += `
+        <ion-item-sliding>
+          <ion-item>
+            <ion-item slot="start" style="margin-right: 10px;">
+              <ion-img class="imgRegistros"
+                src="${UIMG + actividad.imagen + ".png"}"
+                alt="${actividad.nombre}"
+                style="width: 50px; height: 50px;"
+              >
+            </ion-item>
+            <ion-label class="labelRegistros" style="margin-left: 10px;">
+              ${actividad.nombre} / ${r.tiempo}(min) / ${r.fecha}
+            </ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option 
+              id="${r.id}" 
+              color="danger" 
+              onclick="eliminarRegistro('${r.id}')"
+            > 
+            Eliminar
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      `;
+    }else{
+      error = true
+    }
   }
   dqs("#sliderRegistros").innerHTML = ret;
+  if(error){
+    MostrarToast("Algunas actividades no pudieron ser cargadas", 3000);
+  }
   loading.dismiss();
 }
 function cargarlistButtonsRegistros() {
