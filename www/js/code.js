@@ -516,20 +516,27 @@ async function obtenerRegistros() {
 
 
 /* TODO LO NECESARIO PARA LA PANTALLA DE MIS ESTADISTICAS */
-async function obtenerTiempo(t) {
-  let tiempo = 0;
-  console.log(t == 1 ? 4 : 3);
-  let registros = await registrosFiltrados(t == 1 ? "4" : "3");
+async function obtenerTiempo() {
+  let tiempoTotal = 0;
+  let tiempoDiario= 0
+  let registros = await obtenerRegistros();
 
   for (let r of registros) {
-    tiempo += r.tiempo;
+    tiempoTotal += r.tiempo;
   }
-  return tiempo;
+  for (let r of registros) {
+    if (r.fecha == hoy.toString().split("T")[0]) {
+      tiempoDiario+=r.tiempo;
+    }
+    
+  }
+  return [tiempoTotal, tiempoDiario];
 }
 async function cargarTiempos() {
   PrenderLoading("Cargando estadisticas.");
-  let tiempoTotal = await obtenerTiempo(0);
-  let tiempoDiario = await obtenerTiempo(1);
+  let tiempo = await obtenerTiempo();
+  let tiempoTotal = tiempo[0];
+  let tiempoDiario = tiempo[1];
 
   let ret = `
     <ion-item>
