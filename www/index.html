@@ -42,13 +42,18 @@
         <ion-route url="/" component="page-home"> </ion-route>
         <ion-route url="/login" component="page-login"> </ion-route>
         <ion-route url="/registro" component="page-registro"> </ion-route>
-        <ion-route url="/registrar-ejercicio" component="page-registrar-ejercicio"> </ion-route>
-        <ion-route url="/mis-registros" component="page-mis-registros"> </ion-route>
+        <ion-route
+          url="/registrar-ejercicio"
+          component="page-registrar-ejercicio"
+        >
+        </ion-route>
+        <ion-route url="/mis-registros" component="page-mis-registros">
+        </ion-route>
         <ion-route url="/mapa" component="page-mapa"> </ion-route>
-        <ion-route url="/estadisticas" component="page-estadisticas"> </ion-route>
+        <ion-route url="/estadisticas" component="page-estadisticas">
+        </ion-route>
       </ion-router>
       <ion-nav></ion-nav>
-
 
       <!-- MENU -->
       <ion-menu side="start" menu-id="first" content-id="main" id="menu">
@@ -62,7 +67,6 @@
         </ion-content>
       </ion-menu>
       <div id="main"></div>
-
 
       <!-- PANTALLA HOME -->
       <page-home class="ion-page" id="pantalla-home">
@@ -86,7 +90,6 @@
           </ion-text>
         </ion-content>
       </page-home>
-
 
       <!-- PANTALLA LOGIN -->
       <page-login class="ion-page" id="pantalla-login">
@@ -125,7 +128,6 @@
           <ion-label id="label-respuesta-login"></ion-label>
         </ion-content>
       </page-login>
-
 
       <!-- PANTALLA REGISTRO -->
       <page-registro class="ion-page" id="pantalla-registro">
@@ -176,9 +178,11 @@
         </ion-content>
       </page-registro>
 
-
       <!-- PANTALLA REGISTRAR EJERCICIOS -->
-      <page-registrar-ejercicio class="ion-page" id="pantalla-registrar-ejercicio">
+      <page-registrar-ejercicio
+        class="ion-page"
+        id="pantalla-registrar-ejercicio"
+      >
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
@@ -210,6 +214,7 @@
                 aria-label="Custom range"
                 min="1"
                 max="120"
+                value="1"
                 pin="true"
                 ticks="true"
               ></ion-range>
@@ -217,11 +222,12 @@
             <ion-item id="fechaActiv"> </ion-item>
           </ion-list>
 
-          <ion-button expand="full" id="btnGuardarEjercicio">Guardar Ejercicio</ion-button>
+          <ion-button expand="full" id="btnGuardarEjercicio"
+            >Guardar Ejercicio</ion-button
+          >
           <ion-label id="label-respuesta-ejercicio"></ion-label>
         </ion-content>
       </page-registrar-ejercicio>
-
 
       <!-- PANTALLA MIS REGISTROS -->
       <page-mis-registros class="ion-page" id="pantalla-mis-registros">
@@ -245,7 +251,6 @@
         </ion-content>
       </page-mis-registros>
 
-
       <!-- PANTALLA MAPA -->
       <page-mapa class="ion-page" id="pantalla-mapa">
         <ion-header>
@@ -264,7 +269,6 @@
           </ion-list>
         </ion-content>
       </page-mapa>
-
 
       <!-- PANTALLA ESTADISTICAS -->
       <page-estadisticas class="ion-page" id="pantalla-estadisticas">

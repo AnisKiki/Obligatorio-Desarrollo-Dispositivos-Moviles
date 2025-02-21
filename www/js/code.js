@@ -14,11 +14,9 @@ let actividades = null;
 let modal = null;
 Inicio();
 
-
 function dqs(id) {
   return document.querySelector(`${id}`);
 }
-
 
 let MiLat = null;
 let MiLong = null;
@@ -26,7 +24,6 @@ function Inicio() {
   Eventos();
   ArmarMenu();
 }
-
 
 function ArmarMenu() {
   let hayToken = localStorage.getItem("token");
@@ -51,7 +48,6 @@ function ArmarMenu() {
 function CerrarMenu() {
   MENU.close();
 }
-
 
 function Navegar(evt) {
   OcultarPantalla();
@@ -90,7 +86,6 @@ function OcultarPantalla() {
   ESTADISTICAS.style.display = "none";
 }
 
-
 function Eventos() {
   ROUTER.addEventListener("ionRouteDidChange", Navegar);
 
@@ -106,7 +101,6 @@ function Eventos() {
   });
 }
 
-
 const loading = document.createElement("ion-loading");
 function PrenderLoading(texto) {
   loading.cssClass = "my-custom-class";
@@ -121,8 +115,6 @@ function MostrarToast(mensaje, duracion) {
   document.body.appendChild(toast);
   toast.present();
 }
-
-
 
 /* TODO LO NECESARIO PARA LA PANTALLA DE REGISTRARSE */
 let paises = null;
@@ -184,8 +176,6 @@ async function registrarse(u) {
   return res;
 }
 
-
-
 /* TODO LO NECESARIO PARA LA PANTALLA DE LOGIN */
 async function TomarDatosLogin() {
   let nom = dqs("#txtLoginNombre").value;
@@ -230,8 +220,6 @@ async function comprobarUsuario(l) {
   res = await response.json();
   return res;
 }
-
-
 
 /* TODO LO NECESARIO PARA LA PANTALLA DE REGISTRAR EJERCICIOS*/
 async function GuardarEjercicio() {
@@ -333,11 +321,9 @@ function cargarCalendario() {
 }
 // Fin Calendario Actividades //
 
-
-
 /* TODO LO NECESARIO PARA LA PANTALLA DE MIS REGISTROS */
 // Error
-// https://github.com/ionic-team/ionic-framework/issues/29499 
+// https://github.com/ionic-team/ionic-framework/issues/29499
 async function CargarSliderRegistros() {
   PrenderLoading("Cargando componentes.");
   /* Soy dios */
@@ -513,12 +499,10 @@ async function obtenerRegistros() {
   return (await ret).registros;
 }
 
-
-
 /* TODO LO NECESARIO PARA LA PANTALLA DE MIS ESTADISTICAS */
 async function obtenerTiempo() {
   let tiempoTotal = 0;
-  let tiempoDiario= 0
+  let tiempoDiario = 0;
   let registros = await obtenerRegistros();
 
   for (let r of registros) {
@@ -526,9 +510,8 @@ async function obtenerTiempo() {
   }
   for (let r of registros) {
     if (r.fecha == hoy.toString().split("T")[0]) {
-      tiempoDiario+=r.tiempo;
+      tiempoDiario += r.tiempo;
     }
-    
   }
   return [tiempoTotal, tiempoDiario];
 }
@@ -552,20 +535,18 @@ async function cargarTiempos() {
   loading.dismiss();
 }
 
-
-
 /* TODO LO NECESARIO PARA LA PANTALLA DE MAPA */
-async function cargarMapa(){
-  PrenderLoading("Cargando componentes.")
-  setTimeout(function(){
-    CrearMapa()
-  },1000);
+async function cargarMapa() {
+  PrenderLoading("Cargando componentes.");
+  setTimeout(function () {
+    CrearMapa();
+  }, 1000);
 }
 let lat = -19.9;
-let long= -58.1;
+let long = -58.1;
 var map = null;
 async function CrearMapa() {
-  if (map != null){
+  if (map != null) {
     map.remove();
   }
   map = L.map("map").setView([lat, long], 4);
@@ -573,15 +554,16 @@ async function CrearMapa() {
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     minZoom: 1,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
-  loading.dismiss()
+  loading.dismiss();
   return map;
 }
-async function cargarPersonasPais(){
+async function cargarPersonasPais() {
   let personas = await obtenerPersonasPorPaisValido();
   if (personas != null) {
-    personas.forEach(p => {
+    personas.forEach((p) => {
       let marcador = L.marker([p.latitude, p.longitude]);
       marcador.bindPopup(`
         <strong>
@@ -591,11 +573,11 @@ async function cargarPersonasPais(){
         <span>
           Cantidad de usuarios: ${p.cantidadDeUsuarios}
         </span>
-      `)
-      marcador.addTo(map)
+      `);
+      marcador.addTo(map);
     });
-  }else{
-    MostrarToast("No se pueden cargar las personas por Pais.", 3000)
+  } else {
+    MostrarToast("No se pueden cargar las personas por Pais.", 3000);
   }
 }
 async function obtenerPersonasPorPais() {
@@ -618,14 +600,14 @@ async function obtenerPersonasPorPais() {
 async function obtenerPersonasPorPaisValido() {
   let personas = await obtenerPersonasPorPais();
   await cargarPaises();
-  let ret =[];
+  let ret = [];
 
   if (personas != null) {
     personas.forEach((p) => {
-      paises.forEach(pa => {
-        if(pa.id == p.id){
-          Object.defineProperty(p,'latitude',{value:pa.latitude});
-          Object.defineProperty(p,'longitude',{value:pa.longitude});
+      paises.forEach((pa) => {
+        if (pa.id == p.id) {
+          Object.defineProperty(p, "latitude", { value: pa.latitude });
+          Object.defineProperty(p, "longitude", { value: pa.longitude });
           ret.push(p);
         }
       });
@@ -636,16 +618,14 @@ async function obtenerPersonasPorPaisValido() {
 async function cargarPaises() {
   if (paises == null) {
     paises = await fetch(`${URL_BASE}paises.php`);
-    if (paises.status == 200){
+    if (paises.status == 200) {
       paises = await paises.json();
-      paises= paises.paises
-    }else{
-      MostrarToast("No se pueden cargar los Paises.", 3000)
+      paises = paises.paises;
+    } else {
+      MostrarToast("No se pueden cargar los Paises.", 3000);
     }
   }
 }
-
-
 
 /* LO NECESARIO PARA CERRAR SESION */
 function CerrarSesion() {
