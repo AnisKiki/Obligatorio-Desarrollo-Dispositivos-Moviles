@@ -339,7 +339,7 @@ async function CargarSliderRegistros() {
   let error = false;
   let ret = "";
   for (let r of registros) {
-    if(r.idActividad != 0 || idActividad == null || idActividad == undefined){
+    if(r.idActividad != 0 || r.idActividad == null || r.idActividad == undefined){
       const actividad = await actividadById(r.idActividad);
       /* 
         <ion-item>
