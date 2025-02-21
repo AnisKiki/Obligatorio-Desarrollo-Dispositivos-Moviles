@@ -235,19 +235,19 @@ async function GuardarEjercicio() {
   }
   if (mensajeError) {
     MostrarToast(mensajeError, 3000);
-  }
-
-  let ejercicio = new Object();
-  ejercicio.idUsuario = localStorage.getItem("id");
-  ejercicio.idActividad = act;
-  ejercicio.tiempo = tie;
-  ejercicio.fecha = fec;
-
-  let response = await registrarEjercicio(ejercicio);
-  if (response.status == 200) {
-    MostrarToast("Actividad registrada correctamente.", 3000);
   } else {
-    MostrarToast("No se ha podido registrar la actividad.", 3000);
+    let ejercicio = new Object();
+    ejercicio.idUsuario = localStorage.getItem("id");
+    ejercicio.idActividad = act;
+    ejercicio.tiempo = tie;
+    ejercicio.fecha = fec;
+
+    let response = await registrarEjercicio(ejercicio);
+    if (response.status == 200) {
+      MostrarToast("Actividad registrada correctamente.", 3000);
+    } else {
+      MostrarToast("No se ha podido registrar la actividad.", 3000);
+    }
   }
 }
 async function registrarEjercicio(e) {
